@@ -1,3 +1,4 @@
+//
 var barTop:FlxSprite;
 var barBottom:FlxSprite;
 
