@@ -1,7 +1,7 @@
 //
 function onDadHit(NoteHitEvent){
-    if(health > 0.1 && Options.globalHealthDrain)
+    if(Options.globalHealthDrain)
     {
-        health = health - 0.018;
+        health = Math.max(0.001, health - 0.02);
     }
 }
