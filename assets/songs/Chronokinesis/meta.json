@@ -1,0 +1,17 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 110,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -8478985,
+	"displayName": "Chronokinesis",
+	"icon": "Danny",
+	"name": "Chronokinesis",
+	"color": "#7E9EF7"
+}
