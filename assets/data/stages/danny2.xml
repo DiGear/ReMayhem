@@ -1,0 +1,10 @@
+<!DOCTYPE codename-engine-stage>
+<stage zoom="0.7" name="danny2" folder="stages/danny1/" startCamPosY="400" startCamPosX="1000">
+	<sprite name="backdrop" x="-700" y="-500" sprite="000-n" scroll="0.6"/>
+	<sprite name="backwalk" x="-700" y="-500" sprite="001-n" scroll="0.75"/>
+	<sprite name="pillars" x="-700" y="-500" sprite="002-n" scroll="0.8"/>
+	<sprite name="frontwalk" x="-700" y="-500" sprite="003-n" scroll="0.9"/>
+	<girlfriend/>
+	<dad/>
+	<boyfriend/>
+</stage>

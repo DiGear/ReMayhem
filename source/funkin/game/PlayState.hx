@@ -213,11 +213,15 @@ class PlayState extends MusicBeatState
 	/**
 	 * Whether or not to show the secret gitaroo pause.
 	 */
+	#if debug
+	public var allowGitaroo:Bool = false;
+	#else
 	public var allowGitaroo:Bool = true;
+	#end
 	/**
 	 * Whether or not to bop the icons on beat.
 	 */
-	public var doIconBop:Bool = true;
+	public var doIconBop:Bool = false;
 
 	/**
 	 * Whenever cam zooming is enabled, enables on a note hit if not cancelled.
@@ -1211,7 +1215,7 @@ class PlayState extends MusicBeatState
 	}
 
 	function updateIconPositions() {
-		var iconOffset:Int = 40;
+		var iconOffset:Int = 140;
 		health = FlxMath.bound(health, 0, maxHealth);
 
 		var center:Float = healthBar.x + healthBar.width * FlxMath.remapToRange(healthBar.percent, 0, 100, 1, 0);
@@ -1272,8 +1276,8 @@ class PlayState extends MusicBeatState
 			iconP1.origin.set(0.5, 0.5);
 			iconP2.origin.set(0.5, 0.5);
 
-			iconP1.x -= 40;
-			iconP2.x += 40;
+			iconP1.x -= 180;
+			iconP2.x += 180;
 
 			iconP1.scale.set(lerp(iconP1.scale.x, 1, 0.33), lerp(iconP1.scale.y, 1, 0.33));
 			iconP2.scale.set(lerp(iconP2.scale.x, 1, 0.33), lerp(iconP2.scale.y, 1, 0.33));
@@ -1656,19 +1660,19 @@ class PlayState extends MusicBeatState
 		{
 			daRating = 'shit';
 			score = 50;
-			accuracy = 0.25;
+			accuracy = 0.20;
 		}
 		else if (noteDiff > hitWindow * 0.75)
 		{
 			daRating = 'bad';
 			score = 100;
-			accuracy = 0.45;
+			accuracy = 0.3;
 		}
 		else if (noteDiff > hitWindow * 0.2)
 		{
 			daRating = 'good';
 			score = 200;
-			accuracy = 0.75;
+			accuracy = 1;
 		}
 
 		var event:NoteHitEvent;
