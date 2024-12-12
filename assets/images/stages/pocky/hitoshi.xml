@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="hitoshi.png">
+	<!-- Created with Adobe Animate version 19.1.0.349 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="hitoshi dance0000" x="8" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0001" x="8" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0002" x="8" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0003" x="8" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0004" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0005" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0006" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0007" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0008" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0009" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0010" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0011" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0012" x="8" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0013" x="8" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0014" x="8" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0015" x="8" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0016" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0017" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0018" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0019" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0020" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0021" x="213" y="496" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0022" x="213" y="8" width="197" height="480"/>
+	<SubTexture name="hitoshi dance0023" x="213" y="8" width="197" height="480"/>
+</TextureAtlas>
