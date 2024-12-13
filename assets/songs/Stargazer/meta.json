@@ -3,16 +3,16 @@
 	"opponentModeAllowed": true,
 	"coopAllowed": true,
 	"stepsPerBeat": 4,
-	"bpm": 110,
+	"bpm": 170,
 	"difficulties": [
 		"Standard",
 		"Mayhem"
 	],
 	"needsVoices": true,
 	"parsedColor": -5986817,
-	"displayName": "Chronokinesis",
-	"icon": "Danny",
-	"name": "Chronokinesis",
+	"displayName": "Stargazer",
+	"icon": "danny",
+	"name": "Stargazer",
 	"color": "#A4A5FF",
 	"customValues": {
 		"composers": "DiGear"
