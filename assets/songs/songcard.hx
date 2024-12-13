@@ -28,7 +28,7 @@ function postCreate()
 	songinfo.camera = bruh;
 
 	// set up the info card
-	cardmain = new FlxSprite(-500, 285).makeGraphic(songinfo.width + 30, 60, 0xFF222222);
+	cardmain = new FlxSprite(-500, 285).makeGraphic(songinfo.width + 40, 60, 0xFF222222); // 40 is a lot but its necessary padding
 	cardmain.camera = bruh;
 
 	// set up the accent color
