@@ -23,8 +23,8 @@ function postCreate()
 	}
 
 	// set up the song info
-	songinfo = new FlxText(-500, 290, 0, SONG.meta.displayName + "\n by " + composers);
-	songinfo.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, "right");
+	songinfo = new FlxText(-500, 290, 0, SONG.meta.displayName + "\nby " + composers);
+	songinfo.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, "left");
 	songinfo.camera = bruh;
 
 	// set up the info card
@@ -45,7 +45,7 @@ function postCreate()
 function onSongStart()
 {
 	// tween in
-	FlxTween.tween(songinfo, {x: 20}, 0.8, {ease: FlxEase.sineOut});
+	FlxTween.tween(songinfo, {x: 31}, 0.8, {ease: FlxEase.sineOut});
 	FlxTween.tween(cardmain, {x: 0}, 0.8, {ease: FlxEase.sineOut});
 	FlxTween.tween(cardaccent, {x: 0}, 0.8, {ease: FlxEase.sineOut});
 
