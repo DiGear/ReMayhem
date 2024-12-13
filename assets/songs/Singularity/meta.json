@@ -13,5 +13,8 @@
 	"displayName": "Singularity",
 	"icon": "Danny",
 	"name": "Singularity",
-	"color": "#7E9EF7"
+	"color": "#7E9EF7",
+	"customValues": {
+		"composers": "DiGear"
+	}
 }

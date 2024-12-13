@@ -13,5 +13,7 @@
 	"displayName": "This Ones Final Hours",
 	"icon": "Danny-angry",
 	"name": "This Ones Final Hours",
-	"color": "#7E9EF7"
+	"customValues": {
+		"composers": "DiGear"
+	}
 }

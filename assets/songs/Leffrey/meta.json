@@ -9,9 +9,13 @@
 		"Mayhem"
 	],
 	"needsVoices": true,
-	"parsedColor": 4997631,
+	"parsedColor": -11779585,
 	"displayName": "Leffrey",
 	"icon": "Leffrey",
 	"name": "Leffrey",
-	"color": "#4C41FF"
+	"color": "#4C41FF",
+	"customValues": {
+		"composers": "DiGear",
+		"mcomposers": "DiGear, Leffrey"
+	}
 }
