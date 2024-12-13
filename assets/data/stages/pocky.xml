@@ -1,17 +1,17 @@
 <!DOCTYPE codename-engine-stage>
 <stage zoom="0.8" name="pocky" folder="stages/pocky/" startCamPosY="400" startCamPosX="1000">
-	<!--<sprite name="wall" x="-790" y="-450" sprite="wall" scroll="0.9"/>
-	<sprite name="sayori" sprite="sayobounce" type="onbeat" x="520" y="138" beatInterval="1" scroll="0.9">
+	<sprite name="wall" x="-790" y="-550" sprite="wall" scroll="0.85"/>
+	<sprite name="sayori" sprite="sayobounce" type="onbeat" x="520" y="38" beatInterval="1" scroll="0.85">
     	<anim name="sayobounce" anim="stages/pocky/sayobounce" loop="false"/>
-	</sprite>-->
-	<!--<sprite name="foreground" x="-790" y="-450" sprite="foreground" scroll="0.76"/>-->
-	<sprite name="hitoshi" sprite="hitoshi" type="onbeat" x="40" y="196" beatInterval="2" scroll="0.76">
+	</sprite>
+	<sprite name="foreground" x="-790" y="-550" sprite="foreground" scroll="0.85"/>
+	<sprite name="hitoshi" sprite="hitoshi" type="onbeat" x="40" y="116" beatInterval="2" scroll="0.85">
     	<anim name="dance" anim="stages/pocky/hitoshi" loop="false"/>
 	</sprite>
-	<sprite name="monika" sprite="monika" type="onbeat" x="400" y="256" beatInterval="2" scroll="0.76">
+	<sprite name="monika" sprite="monika" type="onbeat" x="400" y="196" beatInterval="2" scroll="0.85">
     	<anim name="cheerNormal" anim="stages/pocky/monika" loop="false"/>
 	</sprite>
-	<sprite name="ezo" sprite="ezo cheer" type="onbeat" x="730" y="238" beatInterval="2" scroll="0.76">
+	<sprite name="ezo" sprite="ezo cheer" type="onbeat" x="730" y="178" beatInterval="2" scroll="0.85">
     	<anim name="cheerNormal" anim="stages/pocky/ezo cheer" loop="false"/>
 	</sprite>
 	<dad/>

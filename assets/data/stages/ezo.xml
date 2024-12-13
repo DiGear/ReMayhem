@@ -5,7 +5,8 @@
 		<!-- speakrs: base it off X 839 Y 442 -->
     	<anim name="speakers_sheet" anim="stages/ezo/speakers_sheet" loop="false"/>
 	</sprite>
-	<dad camxoffset="270" camyoffset="100"/>
-	<boyfriend camxoffset="270" camyoffset="100"/>
+	<girlfriend camxoffset="300" camyoffset="100"/>
+	<dad camxoffset="250" camyoffset="100"/>
+	<boyfriend camxoffset="350" camyoffset="100"/>
 	<sprite name="lights" x="-1250" y="-550" sprite="stage_render_lights" scroll="1.2"/>
 </stage>

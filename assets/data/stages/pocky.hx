@@ -21,6 +21,12 @@ function postCreate() {
 	hitoshi.frames = Paths.getFrames("stages/pocky/hitoshi");
 	hitoshi.animation.addByPrefix("dance", "hitoshi dance", 1, false);
 	hitoshi.animation.play("dance");
+	
+	
+	ezo.scale.set(1.5,1.5);
+	monika.scale.set(1.5,1.5);
+	hitoshi.scale.set(1.5,1.5);
+	
 }
 
 var frameNumberToJump:Int = 0;
