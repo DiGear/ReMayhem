@@ -1,0 +1,20 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 128,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -5986817,
+	"color": "#A4A5FF",
+	"displayName": "This Ones Final Hours",
+	"icon": "Danny-angry",
+	"name": "This Ones Final Hours",
+	"customValues": {
+		"composers": "DiGear"
+	}
+}

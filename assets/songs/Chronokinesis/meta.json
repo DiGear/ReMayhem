@@ -1,0 +1,20 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 110,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -5986817,
+	"displayName": "Chronokinesis",
+	"icon": "Danny",
+	"name": "Chronokinesis",
+	"color": "#A4A5FF",
+	"customValues": {
+		"composers": "DiGear"
+	}
+}

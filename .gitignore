@@ -15,3 +15,6 @@ mods/*
 Git-Installer.exe
 assets/images/characters/Danny BFDI.png
 assets/images/characters/Danny BFDI.xml
+/old psych charts
+CodenameEngine.code-workspace
+*.dwp

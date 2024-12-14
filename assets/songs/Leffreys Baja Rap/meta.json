@@ -13,5 +13,8 @@
 	"displayName": "Leffreys Baja Rap",
 	"icon": "Leffrey",
 	"name": "Leffreys Baja Rap",
-	"color": "#4C41FF"
+	"color": "#4C41FF",
+	"customValues": {
+		"composers": "DiGear, Leffrey"
+	}
 }

@@ -1,0 +1,44 @@
+{
+	"params": [
+	  {
+		"name": "Spotlight Enabled",
+		"type": "Bool",
+		"defaultValue": true
+	  },
+	  {
+		"name": "Character Tint",
+		"type": "ColorWheel",
+		"defaultValue": "#FFFFFF"
+	  },
+	  {
+		"name": "StrumLine",
+		"type": "StrumLine",
+		"defaultValue": 0
+	  },
+	  {
+		"name": "Spotlight X Offset",
+		"type": "Int(-500, 500, 1)",
+		"defaultValue": 0
+	  },
+	  {
+		"name": "Spotlight Y Offset",
+		"type": "Int(-500, 500, 1)",
+		"defaultValue": 0
+	  },
+	  {
+		"name": "Spotlight Scale",
+		"type": "Int(0, 500, 1)",
+		"defaultValue": 1
+	  },
+	  {
+		"name": "Reset Dad Tint",
+		"type": "Bool",
+		"defaultValue": true
+	  },
+	  {
+		"name": "Reset BF Tint",
+		"type": "Bool",
+		"defaultValue": true
+	  }
+	]
+  }

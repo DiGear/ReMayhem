@@ -10,7 +10,10 @@ function postCreate() {
 		data[strumLines.members.indexOf(sl)] = {
 			colors: [for (character in sl.characters) character.iconColor != null ? character.iconColor : switch(sl.data.position) {
 				default: 0xFFFF0000;
-				case 'boyfriend': 0xFF00FFFF;
+				case 'boyfriend': 0xFF00FFFB;
+				case 'leffrey': 0x2b5fe2;
+				case 'danny': 0xA4A5FF;
+				case 'jeffrey': 0xe2862b;
 			}],
 
 			lastNote: {

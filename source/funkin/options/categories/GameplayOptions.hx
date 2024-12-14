@@ -10,9 +10,11 @@ class GameplayOptions extends OptionsScreen {
 
 	public override function new() {
 		super("Gameplay", 'Change Gameplay options such as Downscroll, Scroll Speed');
-		add(new Checkbox(
-			"Opponent Health Drain",
-			"If unchecked, the opponent will not deal damage to your when singing",
+		add(new ArrayOption(
+			"Health Drain",
+			"Opponent deal damage back. Off = Disabled, Normal = less than your damage, Hard = the same as yours. Unfair = more than yours",
+			["none", "normal", "hard", "unfair"],
+			["Off", "Normal", "Hard", "Unfair"],
 			"globalHealthDrain"));
 		add(new Checkbox(
 			"Downscroll",

@@ -1,0 +1,20 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 170,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -5986817,
+	"displayName": "Stargazer",
+	"icon": "danny",
+	"name": "Stargazer",
+	"color": "#A4A5FF",
+	"customValues": {
+		"composers": "DiGear"
+	}
+}

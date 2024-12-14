@@ -1,6 +1,7 @@
+//
 function postCreate()
 {
-    healthBar.numDivisions = 10000;
+    healthBar.numDivisions = 1000;
 }
 
 var lerpHealth:Float = 1;
