@@ -1,5 +1,7 @@
 package funkin.backend.scripting.events;
 
+import funkin.game.Character;
+import funkin.game.NoteSkin;
 import funkin.game.Strum;
 
 final class StrumCreationEvent extends CancellableEvent {
@@ -10,6 +12,10 @@ final class StrumCreationEvent extends CancellableEvent {
 	 * The strum that is being created
 	 */
 	public var strum:Strum;
+
+	public var characters:Array<Character>;
+
+	public var noteSkinData:NoteSkin;
 
 	/**s
 	 * Player ID
@@ -29,7 +35,7 @@ final class StrumCreationEvent extends CancellableEvent {
 	/**
 	 * Sprite path, in case you only want to change the sprite.
 	 */
-	public var sprite:String = "game/notes/default";
+	//public var sprite:String = "game/notes/default";
 
 	/**
 	 * Cancels the animation that makes the strum "land" in the strumline.

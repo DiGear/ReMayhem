@@ -268,9 +268,15 @@ class StrumLine extends FlxTypedGroup<Strum> {
 			});
 		}
 
-		if (!ghostTapping) for(k=>pr in __justPressed) if (pr && __notePerStrum[k] == null) {
-			// FUCK YOU
-			PlayState.instance.noteMiss(this, null, k, ID);
+		for(k=>pr in __justPressed) if (pr && __notePerStrum[k] == null) {
+			if (!ghostTapping) {
+				// FUCK YOU
+				PlayState.instance.noteMiss(this, null, k, ID);
+			} else {
+				// ANTI FUCK YOU
+				for (char in characters)
+					char.playSingAnim(k, null, MISS);
+			}
 		}
 		for(e in __notePerStrum) if (e != null) PlayState.instance.goodNoteHit(this, e);
 
@@ -308,23 +314,35 @@ class StrumLine extends FlxTypedGroup<Strum> {
 		if(data.scrollSpeed != null)
 			babyArrow.scrollSpeed = data.scrollSpeed;
 
-		var event = EventManager.get(StrumCreationEvent).recycle(babyArrow, PlayState.instance.strumLines.members.indexOf(this), i, animPrefix);
+		var event = EventManager.get(StrumCreationEvent).recycle(babyArrow, this.characters, this.characters[0].noteSkinData, PlayState.instance.strumLines.members.indexOf(this), i, animPrefix);
 		event.__doAnimation = !MusicBeatState.skipTransIn && (PlayState.instance != null ? PlayState.instance.introLength > 0 : true);
 		event = PlayState.instance.scripts.event("onStrumCreation", event);
 
 		if (!event.cancelled) {
-			babyArrow.frames = Paths.getFrames(event.sprite);
-			babyArrow.animation.addByPrefix('green', 'arrowUP');
-			babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-			babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-			babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
+			babyArrow.antialiasing = event.noteSkinData.antialiased;
 
-			babyArrow.antialiasing = true;
-			babyArrow.setGraphicSize(Std.int((babyArrow.width * 0.7) * strumScale));
+			if (event.noteSkinData.isFrames) {
+				babyArrow.frames = event.noteSkinData.skin;
+				babyArrow.animation.addByPrefix('green', 'arrowUP');
+				babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
+				babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
+				babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
+	
+				babyArrow.setGraphicSize(Std.int((babyArrow.width * 0.7) * strumScale));
+	
+				babyArrow.animation.addByPrefix('static', 'arrow${event.animPrefix.toUpperCase()}');
+				babyArrow.animation.addByPrefix('pressed', '${event.animPrefix} press', 24, false);
+				babyArrow.animation.addByPrefix('confirm', '${event.animPrefix} confirm', 24, false);
+			} else {
+				babyArrow.loadGraphic(event.noteSkinData.skin, true, event.noteSkinData.width, event.noteSkinData.height);
 
-			babyArrow.animation.addByPrefix('static', 'arrow${event.animPrefix.toUpperCase()}');
-			babyArrow.animation.addByPrefix('pressed', '${event.animPrefix} press', 24, false);
-			babyArrow.animation.addByPrefix('confirm', '${event.animPrefix} confirm', 24, false);
+				var ID = event.strumID;
+				babyArrow.animation.add('static', [ID]);
+				babyArrow.animation.add('pressed', [4 + ID, 8 + ID], 12, false);
+				babyArrow.animation.add('confirm', [12 + ID, 16 + ID], 24, false);
+
+				babyArrow.scale.set(event.noteSkinData.scale, event.noteSkinData.scale);
+			}
 		}
 
 		babyArrow.cpu = cpu;
