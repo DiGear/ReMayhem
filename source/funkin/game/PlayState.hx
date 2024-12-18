@@ -1656,19 +1656,19 @@ class PlayState extends MusicBeatState
 		var score:Int = 300;
 		var accuracy:Float = 1;
 
-		if (noteDiff > hitWindow * 0.9)
+		if (noteDiff > hitWindow * 0.52)
 		{
 			daRating = 'shit';
 			score = 50;
-			accuracy = 0.20;
+			accuracy = 0.1;
 		}
-		else if (noteDiff > hitWindow * 0.75)
+		else if (noteDiff > hitWindow * 0.4)
 		{
 			daRating = 'bad';
 			score = 100;
-			accuracy = 0.3;
+			accuracy = 0.25;
 		}
-		else if (noteDiff > hitWindow * 0.2)
+		else if (noteDiff > hitWindow * 0.35)
 		{
 			daRating = 'good';
 			score = 200;
