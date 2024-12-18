@@ -1,0 +1,16 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 150,
+	"difficulties": [
+		"Standard"
+	],
+	"needsVoices": true,
+	"parsedColor": -15445542,
+	"displayName": "November",
+	"icon": "ezo",
+	"name": "November",
+	"color": "#1451DA"
+}

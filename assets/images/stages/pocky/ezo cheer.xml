@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="ezo cheer.png">
+	<!-- Created with Adobe Animate version 19.1.0.349 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Ezo cheer L0000" x="1197" y="3066" width="167" height="422" frameX="-7" frameY="-15" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0001" x="1197" y="3066" width="167" height="422" frameX="-7" frameY="-15" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0002" x="1049" y="2633" width="169" height="425" frameX="-7" frameY="-12" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0003" x="1055" y="1764" width="171" height="425" frameX="-7" frameY="-12" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0004" x="1055" y="1764" width="171" height="425" frameX="-7" frameY="-12" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0005" x="1057" y="441" width="178" height="425" frameX="-7" frameY="-12" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0006" x="648" y="3090" width="175" height="427" frameX="-10" frameY="-10" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0007" x="866" y="8" width="183" height="427" frameX="-10" frameY="-10" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0008" x="8" y="442" width="217" height="437" frameX="0" frameY="0" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0009" x="8" y="442" width="217" height="437" frameX="0" frameY="0" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0010" x="233" y="442" width="215" height="435" frameX="0" frameY="-2" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0011" x="233" y="885" width="212" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0012" x="8" y="1772" width="212" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0013" x="8" y="1332" width="218" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0014" x="8" y="1332" width="218" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0015" x="8" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0016" x="234" y="1325" width="208" height="434" frameX="-6" frameY="-3" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0017" x="234" y="1767" width="207" height="434" frameX="-6" frameY="-3" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0018" x="452" y="8" width="204" height="426" frameX="-9" frameY="-11" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0019" x="452" y="8" width="204" height="426" frameX="-9" frameY="-11" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer L0020" x="1014" y="3075" width="175" height="422" frameX="-7" frameY="-15" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0000" x="1228" y="2197" width="165" height="422" frameX="0" frameY="-15" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0001" x="1228" y="2197" width="165" height="422" frameX="0" frameY="-15" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0002" x="1226" y="2633" width="165" height="425" frameX="0" frameY="-12" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0003" x="1049" y="2200" width="171" height="425" frameX="0" frameY="-12" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0004" x="1049" y="2200" width="171" height="425" frameX="0" frameY="-12" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0005" x="1057" y="8" width="178" height="425" frameX="0" frameY="-12" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0006" x="1243" y="443" width="175" height="427" frameX="-3" frameY="-10" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0007" x="1051" y="1329" width="183" height="427" frameX="-3" frameY="-10" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0008" x="860" y="884" width="188" height="437" frameX="-22" frameY="0" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0009" x="860" y="884" width="188" height="437" frameX="-22" frameY="0" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0010" x="456" y="442" width="199" height="435" frameX="-9" frameY="-2" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0011" x="446" y="2649" width="199" height="432" frameX="-9" frameY="-5" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0012" x="646" y="2208" width="199" height="432" frameX="-9" frameY="-5" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0013" x="437" y="2209" width="201" height="432" frameX="-13" frameY="-5" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0014" x="437" y="2209" width="201" height="432" frameX="-13" frameY="-5" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0015" x="210" y="3092" width="194" height="432" frameX="-13" frameY="-5" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0016" x="663" y="442" width="195" height="434" frameX="-12" frameY="-3" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0017" x="446" y="3089" width="194" height="434" frameX="-12" frameY="-3" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0018" x="240" y="8" width="204" height="426" frameX="-2" frameY="-11" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0019" x="240" y="8" width="204" height="426" frameX="-2" frameY="-11" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer N0020" x="855" y="2645" width="175" height="422" frameX="0" frameY="-15" frameWidth="214" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0000" x="1056" y="878" width="181" height="422" frameX="-2" frameY="-15" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0001" x="1056" y="878" width="181" height="422" frameX="-2" frameY="-15" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0002" x="664" y="8" width="181" height="425" frameX="-2" frameY="-12" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0003" x="656" y="1768" width="187" height="425" frameX="-2" frameY="-12" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0004" x="656" y="1768" width="187" height="425" frameX="-2" frameY="-12" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0005" x="853" y="1767" width="194" height="425" frameX="-2" frameY="-12" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0006" x="1243" y="8" width="175" height="427" frameX="-21" frameY="-10" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0007" x="860" y="1329" width="183" height="427" frameX="-21" frameY="-10" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0008" x="853" y="2200" width="188" height="437" frameX="-40" frameY="0" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0009" x="853" y="2200" width="188" height="437" frameX="-40" frameY="0" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0010" x="450" y="1325" width="199" height="435" frameX="-27" frameY="-2" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0011" x="453" y="885" width="199" height="432" frameX="-27" frameY="-5" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0012" x="449" y="1768" width="199" height="432" frameX="-27" frameY="-5" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0013" x="228" y="2209" width="201" height="432" frameX="-31" frameY="-5" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0014" x="228" y="2209" width="201" height="432" frameX="-31" frameY="-5" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0015" x="8" y="3092" width="194" height="432" frameX="-31" frameY="-5" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0016" x="657" y="1325" width="195" height="434" frameX="-30" frameY="-3" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0017" x="653" y="2648" width="194" height="434" frameX="-30" frameY="-3" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0018" x="8" y="8" width="224" height="426" frameX="0" frameY="-11" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0019" x="8" y="8" width="224" height="426" frameX="0" frameY="-11" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo cheer W0020" x="660" y="885" width="191" height="422" frameX="-2" frameY="-15" frameWidth="232" frameHeight="437"/>
+	<SubTexture name="Ezo shock0000" x="831" y="3090" width="175" height="427" frameX="-10" frameY="-10" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0001" x="866" y="443" width="183" height="427" frameX="-10" frameY="-10" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0002" x="8" y="442" width="217" height="437" frameX="0" frameY="0" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0003" x="8" y="887" width="217" height="437" frameX="0" frameY="0" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0004" x="233" y="442" width="215" height="435" frameX="0" frameY="-2" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0005" x="233" y="885" width="212" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0006" x="8" y="2212" width="212" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0007" x="8" y="1332" width="218" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0008" x="8" y="1332" width="218" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0009" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0010" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0011" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0012" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0013" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0014" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0015" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0016" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0017" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0018" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0019" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+	<SubTexture name="Ezo shock0020" x="227" y="2652" width="211" height="432" frameX="-3" frameY="-5" frameWidth="221" frameHeight="437"/>
+</TextureAtlas>
