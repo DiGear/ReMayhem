@@ -111,7 +111,7 @@ class NoteTypeButton extends UIButton {
 			path = 'game/notes/${notetype}';
 
 		noteSpr.frames = Paths.getFrames(path);
-		noteSpr.animation.addByPrefix('scroll', 'green0');
+		noteSpr.animation.addByPrefix('scroll', 'arrowUP');
 		noteSpr.animation.play("scroll");
 		noteSpr.updateHitbox(); /*noteSpr.angle = 20;*/
 		noteSpr.setGraphicSize(34, 34);

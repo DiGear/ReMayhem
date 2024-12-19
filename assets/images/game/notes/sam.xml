@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="sam.png">
+	<!-- Made using Maru Aseprite JSON to XML converter -->
+	<SubTexture name="strumLEFT00000" x="0" y="0" width="136" height="152"/>
+	<SubTexture name="strumDOWN00000" x="136" y="0" width="136" height="152"/>
+	<SubTexture name="strumUP00000" x="272" y="0" width="136" height="152"/>
+	<SubTexture name="strumRIGHT00000" x="408" y="0" width="136" height="152"/>
+	<SubTexture name="arrowLEFT00000" x="544" y="0" width="136" height="152"/>
+	<SubTexture name="arrowDOWN00000" x="680" y="0" width="136" height="152"/>
+	<SubTexture name="arrowUP00000" x="0" y="152" width="136" height="152"/>
+	<SubTexture name="arrowRIGHT00000" x="136" y="152" width="136" height="152"/>
+	<SubTexture name="pressLEFT00000" x="544" y="0" width="136" height="152"/>
+	<SubTexture name="pressLEFT00001" x="272" y="152" width="136" height="152"/>
+	<SubTexture name="pressDOWN00000" x="680" y="0" width="136" height="152"/>
+	<SubTexture name="pressDOWN00001" x="408" y="152" width="136" height="152"/>
+	<SubTexture name="pressUP00000" x="0" y="152" width="136" height="152"/>
+	<SubTexture name="pressUP00001" x="544" y="152" width="136" height="152"/>
+	<SubTexture name="pressRIGHT00000" x="136" y="152" width="136" height="152"/>
+	<SubTexture name="pressRIGHT00001" x="680" y="152" width="136" height="152"/>
+	<SubTexture name="confirmLEFT00000" x="0" y="304" width="136" height="152"/>
+	<SubTexture name="confirmLEFT00001" x="136" y="304" width="136" height="152"/>
+	<SubTexture name="confirmDOWN00000" x="272" y="304" width="136" height="152"/>
+	<SubTexture name="confirmDOWN00001" x="408" y="304" width="136" height="152"/>
+	<SubTexture name="confirmUP00000" x="544" y="304" width="136" height="152"/>
+	<SubTexture name="confirmUP00001" x="680" y="304" width="136" height="152"/>
+	<SubTexture name="confirmRIGHT00000" x="0" y="456" width="136" height="152"/>
+	<SubTexture name="confirmRIGHT00001" x="136" y="456" width="136" height="152"/>
+	<SubTexture name="holdLEFT00000" x="272" y="456" width="136" height="152"/>
+	<SubTexture name="holdDOWN00000" x="408" y="456" width="136" height="152"/>
+	<SubTexture name="holdUP00000" x="544" y="456" width="136" height="152"/>
+	<SubTexture name="holdRIGHT00000" x="680" y="456" width="136" height="152"/>
+	<SubTexture name="holdendLEFT00000" x="0" y="608" width="136" height="152"/>
+	<SubTexture name="holdendDOWN00000" x="136" y="608" width="136" height="152"/>
+	<SubTexture name="holdendUP00000" x="272" y="608" width="136" height="152"/>
+	<SubTexture name="holdendRIGHT00000" x="408" y="608" width="136" height="152"/>
+</TextureAtlas>

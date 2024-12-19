@@ -268,9 +268,15 @@ class StrumLine extends FlxTypedGroup<Strum> {
 			});
 		}
 
-		if (!ghostTapping) for(k=>pr in __justPressed) if (pr && __notePerStrum[k] == null) {
-			// FUCK YOU
-			PlayState.instance.noteMiss(this, null, k, ID);
+		for(k=>pr in __justPressed) if (pr && __notePerStrum[k] == null) {
+			if (!ghostTapping) {
+				// FUCK YOU
+				PlayState.instance.noteMiss(this, null, k, ID);
+			} else {
+				// ANTI FUCK YOU
+				for (char in characters)
+					char.playSingAnim(k, null, MISS);
+			}
 		}
 		for(e in __notePerStrum) if (e != null) PlayState.instance.goodNoteHit(this, e);
 
@@ -297,7 +303,7 @@ class StrumLine extends FlxTypedGroup<Strum> {
 	/**
 	 * Creates a strum and returns the created strum (needs to be added manually).
 	 * @param i Index of the strum
-	 * @param animPrefix (Optional) Animation prefix (`left` = `arrowLEFT`, `left press`, `left confirm`).
+	 * @param animPrefix (Optional) Animation prefix (`left` = `arrowLEFT`, `pressLEFT`, `confirmLEFT`).
 	 */
 	public function createStrum(i:Int, ?animPrefix:String) {
 		if (animPrefix == null)
@@ -308,23 +314,24 @@ class StrumLine extends FlxTypedGroup<Strum> {
 		if(data.scrollSpeed != null)
 			babyArrow.scrollSpeed = data.scrollSpeed;
 
-		var event = EventManager.get(StrumCreationEvent).recycle(babyArrow, PlayState.instance.strumLines.members.indexOf(this), i, animPrefix);
+		var event = EventManager.get(StrumCreationEvent).recycle(babyArrow, this.characters, this.characters[0].noteSkinData, PlayState.instance.strumLines.members.indexOf(this), i, animPrefix);
 		event.__doAnimation = !MusicBeatState.skipTransIn && (PlayState.instance != null ? PlayState.instance.introLength > 0 : true);
 		event = PlayState.instance.scripts.event("onStrumCreation", event);
 
 		if (!event.cancelled) {
-			babyArrow.frames = Paths.getFrames(event.sprite);
+			babyArrow.antialiasing = event.noteSkinData.antialiased;
+
+			babyArrow.frames = Paths.getFrames(event.noteSkinData.skin);
 			babyArrow.animation.addByPrefix('green', 'arrowUP');
 			babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 			babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
 			babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
 
-			babyArrow.antialiasing = true;
-			babyArrow.setGraphicSize(Std.int((babyArrow.width * 0.7) * strumScale));
+			babyArrow.setGraphicSize(Std.int(((babyArrow.width * 0.7) * strumScale)));
 
-			babyArrow.animation.addByPrefix('static', 'arrow${event.animPrefix.toUpperCase()}');
-			babyArrow.animation.addByPrefix('pressed', '${event.animPrefix} press', 24, false);
-			babyArrow.animation.addByPrefix('confirm', '${event.animPrefix} confirm', 24, false);
+			babyArrow.animation.addByPrefix('static', 'strum${event.animPrefix.toUpperCase()}');
+			babyArrow.animation.addByPrefix('pressed', 'press${event.animPrefix.toUpperCase()}', 24, false);
+			babyArrow.animation.addByPrefix('confirm', 'confirm${event.animPrefix.toUpperCase()}', 24, false);
 		}
 
 		babyArrow.cpu = cpu;

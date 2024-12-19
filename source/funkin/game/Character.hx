@@ -20,6 +20,7 @@ import funkin.backend.system.Conductor;
 import funkin.backend.system.interfaces.IBeatReceiver;
 import funkin.backend.system.interfaces.IOffsetCompatible;
 import funkin.backend.utils.XMLUtil;
+import funkin.game.NoteSkin;
 import haxe.Exception;
 import haxe.io.Path;
 import haxe.xml.Access;
@@ -51,6 +52,8 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	public var scripts:ScriptPack;
 	public var xmlImportedScripts:Array<XMLImportedScriptInfo> = [];
 	public var script(default, set):Script;
+
+	public var noteSkinData:NoteSkin = new NoteSkin();
 
 	public function prepareInfos(node:Access)
 		return XMLImportedScriptInfo.prepareInfos(node, scripts, (infos) -> xmlImportedScripts.push(infos));
@@ -318,6 +321,8 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 		}
 		if (xml.x.exists("antialiasing")) antialiasing = (xml.x.get("antialiasing") == "true");
 		if (xml.x.exists("sprite")) sprite = xml.x.get("sprite");
+
+		noteSkinData.loadFromXML(this.xml);
 
 		var hasInterval:Bool = xml.x.exists("interval");
 		if (hasInterval) beatInterval = Std.parseInt(xml.x.get("interval"));

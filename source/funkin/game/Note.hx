@@ -26,6 +26,7 @@ class Note extends FlxSprite
 		}
 		return strumLine = strLine;
 	}
+	public var characters:Array<Character>;
 
 	private function get_mustPress():Bool {
 		return false;
@@ -117,6 +118,7 @@ class Note extends FlxSprite
 		this.isSustainNote = sustain;
 		this.sustainLength = sustainLength;
 		this.strumLine = strumLine;
+		this.characters = strumLine.characters;
 		for(field in Reflect.fields(noteData)) {
 			if(!DEFAULT_FIELDS.contains(field)) {
 				this.extra.set(field, Reflect.field(noteData, field));
@@ -130,9 +132,10 @@ class Note extends FlxSprite
 		this.strumTime = noteData.time.getDefault(0) + sustainOffset;
 		this.noteData = noteData.id.getDefault(0);
 
-		var customType = Paths.image('game/notes/${this.noteType}');
-		var event = EventManager.get(NoteCreationEvent).recycle(this, strumID, this.noteType, noteTypeID, PlayState.instance.strumLines.members.indexOf(strumLine), mustPress,
-			(this.noteType != null && customTypePathExists(customType)) ? 'game/notes/${this.noteType}' : 'game/notes/default', @:privateAccess strumLine.strumScale * 0.7, animSuffix);
+		var noteSkinData = this.characters[0].noteSkinData;
+		var customType = Paths.image(noteSkinData.skin + '-${this.noteType}');
+		var event = EventManager.get(NoteCreationEvent).recycle(this, strumID, this.characters, noteSkinData, this.noteType, noteTypeID, PlayState.instance.strumLines.members.indexOf(strumLine), mustPress,
+			(this.noteType != null && customTypePathExists(customType)) ? noteSkinData.skin + '-${this.noteType}' : noteSkinData.skin, @:privateAccess (strumLine.strumScale * 0.7), animSuffix);
 
 		if (PlayState.instance != null)
 			event = PlayState.instance.scripts.event("onNoteCreation", event);
@@ -143,29 +146,27 @@ class Note extends FlxSprite
 			{
 				// case "My Custom Note Type": // hardcoding note types
 				default:
-					frames = Paths.getFrames(event.noteSprite);
-
+					antialiasing = event.noteSkinData.antialiased;
+					frames = Paths.getFrames(event.noteFrames);
+					
+					// what the fuck is this language
+					var dir:Null<String> = null;
 					switch(event.strumID % 4) {
 						case 0:
-							animation.addByPrefix('scroll', 'purple0');
-							animation.addByPrefix('hold', 'purple hold piece');
-							animation.addByPrefix('holdend', 'pruple end hold');
+							dir = "LEFT";
 						case 1:
-							animation.addByPrefix('scroll', 'blue0');
-							animation.addByPrefix('hold', 'blue hold piece');
-							animation.addByPrefix('holdend', 'blue hold end');
+							dir = "DOWN";
 						case 2:
-							animation.addByPrefix('scroll', 'green0');
-							animation.addByPrefix('hold', 'green hold piece');
-							animation.addByPrefix('holdend', 'green hold end');
+							dir = "UP";
 						case 3:
-							animation.addByPrefix('scroll', 'red0');
-							animation.addByPrefix('hold', 'red hold piece');
-							animation.addByPrefix('holdend', 'red hold end');
+							dir = "RIGHT";
 					}
+					animation.addByPrefix('scroll', 'arrow' + dir);
+					animation.addByPrefix('hold', 'hold' + dir);
+					animation.addByPrefix('holdend', 'holdend' + dir);
 
 					scale.set(event.noteScale, event.noteScale);
-					antialiasing = true;
+					splash = event.noteSkinData.splashSkin;
 			}
 		}
 

@@ -1,19 +1,18 @@
-// comment to avoid vscode syntax error
-var bruh:HudCamera;
-var charicon:HealthIcon;
-var songinfo:FlxText;
-var cardmain:FlxSprite;
-var cardaccent:FlxSprite;
-var accentheight:Float;
-var composers:String = null;
+//
 
-function postCreate()
-{
-	// set up the camera
-	bruh = new HudCamera();
-	bruh.bgColor = '#00000000';
-	FlxG.cameras.add(bruh, false);
+var songTitle:FlxText;
+var songAuthors:FlxText;
+var border:FlxSprite;
+var cardBack:FlxSprite;
+var cardAccent:FlxSprite;
 
+function postCreate() {
+	var title = SONG.meta.displayName;
+	if (PlayState.difficulty == "Mayhem") {
+		title = title + "-M";
+	}
+
+	var composers:String;
 	// we're checking if you're playing Mayhem, if you are, we're gonna use the mayhem remix composers
 	if (PlayState.difficulty == "Mayhem") {
 		composers = (Reflect.hasField(SONG.meta.customValues, "mcomposers") ? SONG.meta.customValues.mcomposers : "null");
@@ -21,46 +20,44 @@ function postCreate()
 		composers = (Reflect.hasField(SONG.meta.customValues, "composers") ? SONG.meta.customValues.composers : "null");
 	}
 
-	// set up the song info, add -M if you're playing Mayhem
-	if (PlayState.difficulty == "Mayhem") {
-		songinfo = new FlxText(-500, 290, 0, SONG.meta.displayName + "-M" + "\nby " + composers);
-	} else {
-		songinfo = new FlxText(-500, 290, 0, SONG.meta.displayName + "\nby " + composers);
-	}
-	songinfo.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, "left");
-	songinfo.camera = bruh;
+	songTitle = new FlxText(-500, 290, 0, title);
+	songTitle.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, "left");
+	songTitle.camera = camHUD;
+
+	songAuthors = new FlxText(-500, 290 + 32, 0, composers);
+	songAuthors.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, "left");
+	songAuthors.camera = camHUD;
 
 	// border, theres probably a better way to do this
-	border = new FlxSprite(-500, 281).makeGraphic(songinfo.width + 45, 68, 0xFF000000);
-	border.camera = bruh;
+	border = new FlxSprite(-500, 281).makeGraphic(songTitle.width + 45, 68, 0xFF000000);
+	border.camera = camHUD;
 
 	// set up the info card
-	cardmain = new FlxSprite(-500, 285).makeGraphic(songinfo.width + 40, 60, 0xFF222222); // 40 is a lot but its necessary padding
-	cardmain.camera = bruh;
+	cardBack = new FlxSprite(-500, 285).makeGraphic(songTitle.width + 40, 60, 0xFF222222); // 40 is a lot but its necessary padding
+	cardBack.camera = camHUD;
 
 	// set up the accent color
-	cardaccent = new FlxSprite(-500, 285).makeGraphic(25, 60, dad.iconColor);
-	cardaccent.camera = bruh;
+	cardAccent = new FlxSprite(-500, 285).makeGraphic(25, 60, dad.iconColor);
+	cardAccent.camera = camHUD;
 
-	// zorder
 	add(border);
-	add(cardmain);
-	add(cardaccent);
-	add(songinfo);
+	add(cardBack);
+	add(cardAccent);
+	add(songTitle);
+	add(songAuthors);
 }
-
-
-function onSongStart()
-{
-	// tween in
-	FlxTween.tween(songinfo, {x: 31}, 0.8, {ease: FlxEase.sineOut});
+	
+function onSongStart() {
+	FlxTween.tween(songTitle, {x: 31}, 0.8, {ease: FlxEase.sineOut});
+	FlxTween.tween(songAuthors, {x: 31}, 0.8, {ease: FlxEase.sineOut});
 	FlxTween.tween(border, {x: 0}, 0.8, {ease: FlxEase.sineOut});
-	FlxTween.tween(cardmain, {x: 0}, 0.8, {ease: FlxEase.sineOut});
-	FlxTween.tween(cardaccent, {x: 0}, 0.8, {ease: FlxEase.sineOut});
+	FlxTween.tween(cardBack, {x: 0}, 0.8, {ease: FlxEase.sineOut});
+	FlxTween.tween(cardAccent, {x: 0}, 0.8, {ease: FlxEase.sineOut});
 
-	// tween out
-	FlxTween.tween(songinfo, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
+	FlxTween.tween(songTitle, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
+	FlxTween.tween(songAuthors, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
 	FlxTween.tween(border, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
-	FlxTween.tween(cardmain, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
-	FlxTween.tween(cardaccent, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
+	FlxTween.tween(cardBack, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
+	FlxTween.tween(cardAccent, {x: -500}, 0.8, {ease: FlxEase.sineIn, startDelay: 3.8});
 }
+	
