@@ -303,7 +303,7 @@ class StrumLine extends FlxTypedGroup<Strum> {
 	/**
 	 * Creates a strum and returns the created strum (needs to be added manually).
 	 * @param i Index of the strum
-	 * @param animPrefix (Optional) Animation prefix (`left` = `arrowLEFT`, `left press`, `left confirm`).
+	 * @param animPrefix (Optional) Animation prefix (`left` = `arrowLEFT`, `pressLEFT`, `confirmLEFT`).
 	 */
 	public function createStrum(i:Int, ?animPrefix:String) {
 		if (animPrefix == null)
@@ -321,28 +321,17 @@ class StrumLine extends FlxTypedGroup<Strum> {
 		if (!event.cancelled) {
 			babyArrow.antialiasing = event.noteSkinData.antialiased;
 
-			if (event.noteSkinData.isFrames) {
-				babyArrow.frames = event.noteSkinData.skin;
-				babyArrow.animation.addByPrefix('green', 'arrowUP');
-				babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-				babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-				babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
-	
-				babyArrow.setGraphicSize(Std.int((babyArrow.width * 0.7) * strumScale));
-	
-				babyArrow.animation.addByPrefix('static', 'arrow${event.animPrefix.toUpperCase()}');
-				babyArrow.animation.addByPrefix('pressed', '${event.animPrefix} press', 24, false);
-				babyArrow.animation.addByPrefix('confirm', '${event.animPrefix} confirm', 24, false);
-			} else {
-				babyArrow.loadGraphic(event.noteSkinData.skin, true, event.noteSkinData.width, event.noteSkinData.height);
+			babyArrow.frames = Paths.getFrames(event.noteSkinData.skin);
+			babyArrow.animation.addByPrefix('green', 'arrowUP');
+			babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
+			babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
+			babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
 
-				var ID = event.strumID;
-				babyArrow.animation.add('static', [ID]);
-				babyArrow.animation.add('pressed', [4 + ID, 8 + ID], 12, false);
-				babyArrow.animation.add('confirm', [12 + ID, 16 + ID], 24, false);
+			babyArrow.setGraphicSize(Std.int(((babyArrow.width * 0.7) * strumScale)));
 
-				babyArrow.scale.set(event.noteSkinData.scale, event.noteSkinData.scale);
-			}
+			babyArrow.animation.addByPrefix('static', 'strum${event.animPrefix.toUpperCase()}');
+			babyArrow.animation.addByPrefix('pressed', 'press${event.animPrefix.toUpperCase()}', 24, false);
+			babyArrow.animation.addByPrefix('confirm', 'confirm${event.animPrefix.toUpperCase()}', 24, false);
 		}
 
 		babyArrow.cpu = cpu;

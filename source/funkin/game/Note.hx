@@ -132,9 +132,10 @@ class Note extends FlxSprite
 		this.strumTime = noteData.time.getDefault(0) + sustainOffset;
 		this.noteData = noteData.id.getDefault(0);
 
-		var customType = Paths.image('game/notes/${this.noteType}');
-		var event = EventManager.get(NoteCreationEvent).recycle(this, strumID, this.characters, this.characters[0].noteSkinData, this.noteType, noteTypeID, PlayState.instance.strumLines.members.indexOf(strumLine), mustPress,
-			(this.noteType != null && customTypePathExists(customType)) ? 'game/notes/${this.noteType}' : this.characters[0].noteSkinData.skin, @:privateAccess strumLine.strumScale * 0.7, animSuffix);
+		var noteSkinData = this.characters[0].noteSkinData;
+		var customType = Paths.image(noteSkinData.skin + '-${this.noteType}');
+		var event = EventManager.get(NoteCreationEvent).recycle(this, strumID, this.characters, noteSkinData, this.noteType, noteTypeID, PlayState.instance.strumLines.members.indexOf(strumLine), mustPress,
+			(this.noteType != null && customTypePathExists(customType)) ? noteSkinData.skin + '-${this.noteType}' : noteSkinData.skin, @:privateAccess (strumLine.strumScale * 0.7), animSuffix);
 
 		if (PlayState.instance != null)
 			event = PlayState.instance.scripts.event("onNoteCreation", event);
@@ -146,43 +147,26 @@ class Note extends FlxSprite
 				// case "My Custom Note Type": // hardcoding note types
 				default:
 					antialiasing = event.noteSkinData.antialiased;
-
-					if (event.noteSkinData.isFrames) {
-						// this could fuck shit up
-						frames = event.noteSkinData.skin;
-
-						switch(event.strumID % 4) {
-							case 0:
-								animation.addByPrefix('scroll', 'purple0');
-								animation.addByPrefix('hold', 'purple hold piece');
-								animation.addByPrefix('holdend', 'pruple end hold');
-							case 1:
-								animation.addByPrefix('scroll', 'blue0');
-								animation.addByPrefix('hold', 'blue hold piece');
-								animation.addByPrefix('holdend', 'blue hold end');
-							case 2:
-								animation.addByPrefix('scroll', 'green0');
-								animation.addByPrefix('hold', 'green hold piece');
-								animation.addByPrefix('holdend', 'green hold end');
-							case 3:
-								animation.addByPrefix('scroll', 'red0');
-								animation.addByPrefix('hold', 'red hold piece');
-								animation.addByPrefix('holdend', 'red hold end');
-						}
-	
-						scale.set(event.noteScale, event.noteScale);
-					} else {
-						if (isSustainNote) {
-							loadGraphic(event.noteSprite, true, event.noteSkinData.width, event.noteSkinData.height);
-							animation.add("hold", [20 + event.strumID]);
-							animation.add("holdend", [24 + event.strumID]);
-						} else {
-							loadGraphic(event.noteSprite, true, event.noteSkinData.width, event.noteSkinData.height);
-							animation.add("scroll", [4 + event.strumID]);
-						}
-						scale.set(event.noteSkinData.scale, event.noteSkinData.scale);
+					frames = Paths.getFrames(event.noteFrames);
+					
+					// what the fuck is this language
+					var dir:Null<String> = null;
+					switch(event.strumID % 4) {
+						case 0:
+							dir = "LEFT";
+						case 1:
+							dir = "DOWN";
+						case 2:
+							dir = "UP";
+						case 3:
+							dir = "RIGHT";
 					}
-				splash = event.noteSkinData.splashSkin;
+					animation.addByPrefix('scroll', 'arrow' + dir);
+					animation.addByPrefix('hold', 'hold' + dir);
+					animation.addByPrefix('holdend', 'holdend' + dir);
+
+					scale.set(event.noteScale, event.noteScale);
+					splash = event.noteSkinData.splashSkin;
 			}
 		}
 

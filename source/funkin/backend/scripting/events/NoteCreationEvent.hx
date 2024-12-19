@@ -40,11 +40,9 @@ final class NoteCreationEvent extends CancellableEvent {
 	public var mustHit:Bool;
 
 	/**
-	 * Note sprite, if you only want to replace the sprite.
+	 * Note frames, if you only want to replace the frames.
 	 */
-	public var noteSprite:String;
-
-
+	public var noteFrames:String;
 	
 	/**
 	 * Note scale, if you only want to replace the scale.
