@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character y="200" sprite="danny-m" camy="70" icon="danny-m" flipx="false" color="#3F48CC">
+	<anim name="idle" anim="Idle" x="-5" y="0" fps="24" loop="false"/>
+	<anim name="singLEFT" anim="BackwardsAnim" x="76" y="8" fps="24" loop="false"/>
+	<anim name="singDOWN" anim="DownAnim" x="-46" y="-12" fps="24" loop="false"/>
+	<anim name="singUP" anim="UpAnim" x="12" y="24" fps="24" loop="false"/>
+	<anim name="singRIGHT" anim="ForwardsAnim" x="-79" y="-15" fps="24" loop="false"/>
+</character>
