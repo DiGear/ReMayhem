@@ -1,20 +1,21 @@
 {
-	"beatsPerMeasure": 4,
 	"opponentModeAllowed": true,
-	"coopAllowed": true,
-	"stepsPerBeat": 4,
-	"bpm": 110,
+	"icon": "Danny",
 	"difficulties": [
 		"Standard",
 		"Mayhem"
 	],
-	"needsVoices": true,
 	"parsedColor": -5986817,
-	"displayName": "Chronokinesis",
-	"icon": "Danny",
-	"name": "Chronokinesis",
-	"color": "#A4A5FF",
 	"customValues": {
+		"mcomposers": "Momentum",
 		"composers": "DiGear"
-	}
+	},
+	"color": "#A4A5FF",
+	"name": "Chronokinesis",
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"displayName": "Chronokinesis",
+	"beatsPerMeasure": 4,
+	"needsVoices": false,
+	"bpm": 110
 }
