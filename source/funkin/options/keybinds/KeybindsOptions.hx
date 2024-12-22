@@ -142,13 +142,13 @@ class KeybindsOptions extends MusicBeatSubstate {
 					sparrowIcon = "game/notes/default";
 					sparrowAnim = switch(e.name) {
 						case '{noteLeft}':
-							"purple0";
+							"arrowLEFT";
 						case '{noteDown}':
-							"blue0";
+							"arrowDOWN";
 						case '{noteUp}':
-							"green0";
+							"arrowUP";
 						default:
-							"red0";
+							"arrowRIGHT";
 					};
 					e.name = e.name.substring(5, e.name.length - 1);
 				}
