@@ -16,6 +16,6 @@
 	"stepsPerBeat": 4,
 	"displayName": "Chronokinesis",
 	"beatsPerMeasure": 4,
-	"needsVoices": false,
+	"needsVoices": true,
 	"bpm": 110
 }
