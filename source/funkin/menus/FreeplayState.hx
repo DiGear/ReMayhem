@@ -7,9 +7,12 @@ import openfl.text.TextField;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
-import funkin.game.HealthIcon;
 import funkin.savedata.FunkinSave;
 import funkin.backend.scripting.events.*;
+
+// new freep imports
+import flixel.FlxCamera;
+import flixel.tweens.FlxTween;
 
 using StringTools;
 
@@ -79,7 +82,7 @@ class FreeplayState extends MusicBeatState
 	/**
 	 * Group containing all of the alphabets
 	 */
-	public var grpSongs:FlxTypedGroup<Alphabet>;
+	public var grpSongs:FlxTypedGroup<FlxText>;
 
 	/**
 	 * Whenever the currently selected song is playing.
@@ -87,15 +90,14 @@ class FreeplayState extends MusicBeatState
 	public var curPlaying:Bool = false;
 
 	/**
-	 * Array containing all of the icons.
-	 */
-	public var iconArray:Array<HealthIcon> = [];
-
-	/**
 	 * FlxInterpolateColor object for smooth transition between Freeplay colors.
 	 */
 	public var interpColor:FlxInterpolateColor;
 
+	// fug
+	var separator:FlxSprite;
+	var charaBackgrounds:Array<FlxSprite> = [];
+	var freepCam:FlxCamera;
 
 	override function create()
 	{
@@ -120,34 +122,34 @@ class FreeplayState extends MusicBeatState
 
 		super.create();
 
-		// LOAD CHARACTERS
-
-		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/menuDesat'));
+		// i replaced the bgsprite here
+		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/wall'));
 		if (songs.length > 0)
 			bg.color = songs[0].color;
 		bg.antialiasing = true;
 		add(bg);
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
+		// this entire cam def is new and im using it to make the menu items scroll
+		freepCam = new FlxCamera(0, 0, 1280, 720);
+		freepCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(freepCam, false);
+
+		// this now a FlxText group rather than alphabet group
+		grpSongs = new FlxTypedGroup<FlxText>();
 		add(grpSongs);
 
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].displayName, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
+		// ALL OF THIS is rewritten basically
+		for (i in 0...songs.length) {
+			var songText = new FlxText(560, (140 * i) + 30, 0, songs[i].displayName);
+			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
+
+			// this shit doesnt work
+			songText.borderSize = 5;
+			songText.borderQuality = 1;
+			songText.borderColor = FlxColor.BLACK;
+
+			songText.camera = freepCam;
 			grpSongs.add(songText);
-
-			var icon:HealthIcon = new HealthIcon(songs[i].icon);
-			icon.sprTracker = songText;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
@@ -172,6 +174,9 @@ class FreeplayState extends MusicBeatState
 		changeCoopMode(0, true);
 
 		interpColor = new FlxInterpolateColor(bg.color);
+
+		// adding in the new assets like the separator and stage
+
 	}
 
 	#if PRELOAD_ALL
@@ -219,11 +224,10 @@ class FreeplayState extends MusicBeatState
 			changeSelection((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0) - FlxG.mouse.wheel);
 			changeDiff((controls.LEFT_P ? -1 : 0) + (controls.RIGHT_P ? 1 : 0));
 			changeCoopMode((FlxG.keys.justPressed.TAB ? 1 : 0));
-			// putting it before so that its actually smooth
 			updateOptionsAlpha();
 		}
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		scoreText.text = "HIGHSCORE:" + lerpScore;
 		scoreBG.scale.set(Math.max(Math.max(diffText.width, scoreText.width), coopText.width) + 8, (coopText.visible ? coopText.y + coopText.height : 66));
 		scoreBG.updateHitbox();
 		scoreBG.x = FlxG.width - scoreBG.width;
@@ -407,22 +411,15 @@ class FreeplayState extends MusicBeatState
 	function updateOptionsAlpha() {
 		var event = event("onUpdateOptionsAlpha", EventManager.get(FreeplayAlphaUpdateEvent).recycle(0.6, 0.45, 1, 1, 0.25));
 		if (event.cancelled) return;
-
-		for (i in 0...iconArray.length)
-			iconArray[i].alpha = lerp(iconArray[i].alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
-
-		iconArray[curSelected].alpha = #if PRELOAD_ALL songInstPlaying ? event.selectedPlayingAlpha : #end event.selectedAlpha;
-
-		for (i=>item in grpSongs.members)
-		{
-			item.targetY = i - curSelected;
-
-			item.alpha = lerp(item.alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
-
-			if (item.targetY == 0)
-				item.alpha =  #if PRELOAD_ALL songInstPlaying ? event.selectedPlayingAlpha : #end event.selectedAlpha;
+	
+		// all of this is new and its to make the items scroll
+		var target = cast(grpSongs.members[curSelected], FlxText);
+		if (target != null) {
+			var targetY = target.y - freepCam.height / 2;
+			FlxTween.tween(freepCam.scroll, { y: targetY }, 0.15);
 		}
 	}
+	
 }
 
 class FreeplaySonglist {
