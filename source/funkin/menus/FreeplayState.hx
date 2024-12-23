@@ -7,6 +7,7 @@ import openfl.text.TextField;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+import funkin.game.HealthIcon;
 import funkin.savedata.FunkinSave;
 import funkin.backend.scripting.events.*;
 
@@ -86,12 +87,14 @@ class FreeplayState extends MusicBeatState
 	public var curPlaying:Bool = false;
 
 	/**
+	 * Array containing all of the icons.
+	 */
+	public var iconArray:Array<HealthIcon> = [];
+
+	/**
 	 * FlxInterpolateColor object for smooth transition between Freeplay colors.
 	 */
 	public var interpColor:FlxInterpolateColor;
-
-	// fug
-	var separator:FlxSprite;
 
 
 	override function create()
@@ -119,7 +122,7 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/wall'));
+		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/menuDesat'));
 		if (songs.length > 0)
 			bg.color = songs[0].color;
 		bg.antialiasing = true;
@@ -134,6 +137,17 @@ class FreeplayState extends MusicBeatState
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
+
+			var icon:HealthIcon = new HealthIcon(songs[i].icon);
+			icon.sprTracker = songText;
+
+			// using a FlxGroup is too much fuss!
+			iconArray.push(icon);
+			add(icon);
+
+			// songText.x += 40;
+			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+			// songText.screenCenter(X);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
@@ -158,9 +172,6 @@ class FreeplayState extends MusicBeatState
 		changeCoopMode(0, true);
 
 		interpColor = new FlxInterpolateColor(bg.color);
-
-		// fart shit be like
-
 	}
 
 	#if PRELOAD_ALL
@@ -212,7 +223,7 @@ class FreeplayState extends MusicBeatState
 			updateOptionsAlpha();
 		}
 
-		scoreText.text = "HIGHSCORE:" + lerpScore;
+		scoreText.text = "PERSONAL BEST:" + lerpScore;
 		scoreBG.scale.set(Math.max(Math.max(diffText.width, scoreText.width), coopText.width) + 8, (coopText.visible ? coopText.y + coopText.height : 66));
 		scoreBG.updateHitbox();
 		scoreBG.x = FlxG.width - scoreBG.width;
@@ -397,10 +408,14 @@ class FreeplayState extends MusicBeatState
 		var event = event("onUpdateOptionsAlpha", EventManager.get(FreeplayAlphaUpdateEvent).recycle(0.6, 0.45, 1, 1, 0.25));
 		if (event.cancelled) return;
 
+		for (i in 0...iconArray.length)
+			iconArray[i].alpha = lerp(iconArray[i].alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
+
+		iconArray[curSelected].alpha = #if PRELOAD_ALL songInstPlaying ? event.selectedPlayingAlpha : #end event.selectedAlpha;
+
 		for (i=>item in grpSongs.members)
 		{
 			item.targetY = i - curSelected;
-			item.x = 560;
 
 			item.alpha = lerp(item.alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
 
