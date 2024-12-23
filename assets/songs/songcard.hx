@@ -7,7 +7,7 @@ var cardBack:FlxSprite;
 var cardAccent:FlxSprite;
 
 function postCreate() {
-	var title = SONG.meta.displayName;
+	var title = SONG.meta.name;
 	if (PlayState.difficulty == "Mayhem") {
 		title = title + "-M";
 	}
