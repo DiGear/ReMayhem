@@ -7,9 +7,12 @@ import openfl.text.TextField;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
-import funkin.game.HealthIcon;
 import funkin.savedata.FunkinSave;
 import funkin.backend.scripting.events.*;
+
+// new freep imports
+import flixel.FlxCamera;
+import flixel.tweens.FlxTween;
 
 using StringTools;
 
@@ -37,11 +40,6 @@ class FreeplayState extends MusicBeatState
 	 * Text containing the score info (PERSONAL BEST: 0)
 	 */
 	public var scoreText:FlxText;
-
-	/**
-	 * Text containing the current difficulty (< HARD >)
-	 */
-	public var diffText:FlxText;
 
 	/**
 	 * Text containing the current coop/opponent mode ([TAB] Co-Op mode)
@@ -79,7 +77,7 @@ class FreeplayState extends MusicBeatState
 	/**
 	 * Group containing all of the alphabets
 	 */
-	public var grpSongs:FlxTypedGroup<Alphabet>;
+	public var grpSongs:FlxTypedGroup<FlxText>;
 
 	/**
 	 * Whenever the currently selected song is playing.
@@ -87,15 +85,26 @@ class FreeplayState extends MusicBeatState
 	public var curPlaying:Bool = false;
 
 	/**
-	 * Array containing all of the icons.
-	 */
-	public var iconArray:Array<HealthIcon> = [];
-
-	/**
 	 * FlxInterpolateColor object for smooth transition between Freeplay colors.
 	 */
 	public var interpColor:FlxInterpolateColor;
 
+
+
+	// fug
+	var separator:FlxSprite;
+	var charaBackground:Array<FlxSprite> = [];
+	var __lastDifficultyTween:FlxTween;
+
+	//var charaSprite (idk what to do for this yet)
+
+	var songListCam:FlxCamera;
+	var scoreCam:FlxCamera;
+
+	// public fug
+	public var difficultySprites:Map<String, FlxSprite> = [];
+	public var leftArrow:FlxSprite;
+	public var rightArrow:FlxSprite;
 
 	override function create()
 	{
@@ -120,49 +129,92 @@ class FreeplayState extends MusicBeatState
 
 		super.create();
 
-		// LOAD CHARACTERS
-
-		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/menuDesat'));
+		// i replaced the bgsprite here
+		bg = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/wall'));
 		if (songs.length > 0)
 			bg.color = songs[0].color;
 		bg.antialiasing = true;
 		add(bg);
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
+		// this entire cam def is new and im using it to make the menu items scroll
+		songListCam = new FlxCamera(0, 0, 1280, 720);
+		songListCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(songListCam, false);
+
+		// this is so the score and diff overlay is on top
+		scoreCam = new FlxCamera(0, 0, 1280, 720);
+		scoreCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(scoreCam, false);
+
+		// this now a FlxText group rather than alphabet group
+		grpSongs = new FlxTypedGroup<FlxText>();
 		add(grpSongs);
 
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].displayName, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
+		// ALL OF THIS is rewritten basically
+		for (i in 0...songs.length) {
+			var songText = new FlxText(560, (75 * i) + 30, 0, songs[i].displayName);
+			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
+			songText.setBorderStyle(OUTLINE, FlxColor.BLACK, 4, 100);
+			songText.camera = songListCam;
 			grpSongs.add(songText);
-
-			var icon:HealthIcon = new HealthIcon(songs[i].icon);
-			icon.sprTracker = songText;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
+		scoreText = new FlxText(FlxG.width * 0.7, 17, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreText.camera = scoreCam;
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 1, 0xFF000000);
+		scoreBG = new FlxSprite(0, 0).makeGraphic(1280, 100, 0xFF000000);
 		scoreBG.alpha = 0.6;
+		scoreBG.camera = scoreCam;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
-		diffText.font = scoreText.font;
-		add(diffText);
 
-		coopText = new FlxText(diffText.x, diffText.y + diffText.height + 2, 0, "[TAB] Solo", 24);
+		// DUMBASS ARROWS (from story menu)
+		var assets = Paths.getFrames('menus/storymenu/assets');
+		var directions = ["left", "right"];
+
+		leftArrow = new FlxSprite((FlxG.width / 2 + 200) / 2, (scoreBG.y / 2) + 7);
+		rightArrow = new FlxSprite((FlxG.width /2 + 200), (scoreBG.y / 2) + 7);
+		for(k=>arrow in [leftArrow, rightArrow]) {
+			var dir = directions[k];
+
+			arrow.frames = assets;
+			arrow.animation.addByPrefix('idle', 'arrow $dir');
+			arrow.animation.addByPrefix('press', 'arrow push $dir', 24, false);
+			arrow.animation.play('idle');
+			arrow.antialiasing = true;
+			arrow.camera = scoreCam;
+			add(arrow);
+		}
+
+		// mmmmmmmmmmmmmnmnmnnmnmnm.,.l.,
+		for (i in 0...songs.length) {
+			var song = songs[i];
+		
+			for (e in song.difficulties) {
+				var le = e.toLowerCase();
+				if (difficultySprites[le] == null) {
+					var diffSprite = new FlxSprite(leftArrow.x + leftArrow.width, leftArrow.y);
+					diffSprite.loadAnimatedGraphic(Paths.image('menus/storymenu/difficulties/${le}'));
+					diffSprite.setUnstretchedGraphicSize(
+						Std.int(rightArrow.x - leftArrow.x - leftArrow.width),
+						Std.int(leftArrow.height),
+						false,
+						1
+					);
+					diffSprite.antialiasing = true;
+					diffSprite.scrollFactor.set();
+					diffSprite.camera = scoreCam;
+					add(diffSprite);
+		
+					difficultySprites[le] = diffSprite;
+				}
+			}
+		}
+
+		coopText = new FlxText(FlxG.width * 0.7, scoreText.y + 35, 0, "[TAB] Solo", 24);
 		coopText.font = scoreText.font;
+		coopText.camera = scoreCam;
 		add(coopText);
 
 		add(scoreText);
@@ -172,13 +224,24 @@ class FreeplayState extends MusicBeatState
 		changeCoopMode(0, true);
 
 		interpColor = new FlxInterpolateColor(bg.color);
+
+		//add the code to determine the stage and character to show on the left
+		// blah blah
+
+		//this is temporary
+		var tempstage:FlxSprite = new FlxSprite(0,0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
+		add(tempstage);
+
+		// adding in the separator
+		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
+		add(separator);
 	}
 
 	#if PRELOAD_ALL
 	/**
 	 * How much time a song stays selected until it autoplays.
 	 */
-	public var timeUntilAutoplay:Float = 1;
+	public var timeUntilAutoplay:Float = 0.25;
 	/**
 	 * Whenever the song autoplays when hovered over.
 	 */
@@ -219,17 +282,13 @@ class FreeplayState extends MusicBeatState
 			changeSelection((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0) - FlxG.mouse.wheel);
 			changeDiff((controls.LEFT_P ? -1 : 0) + (controls.RIGHT_P ? 1 : 0));
 			changeCoopMode((FlxG.keys.justPressed.TAB ? 1 : 0));
-			// putting it before so that its actually smooth
 			updateOptionsAlpha();
 		}
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
-		scoreBG.scale.set(Math.max(Math.max(diffText.width, scoreText.width), coopText.width) + 8, (coopText.visible ? coopText.y + coopText.height : 66));
+		scoreText.text = "HIGHSCORE:" + lerpScore;
 		scoreBG.updateHitbox();
-		scoreBG.x = FlxG.width - scoreBG.width;
 
 		scoreText.x = coopText.x = scoreBG.x + 4;
-		diffText.x = Std.int(scoreBG.x + ((scoreBG.width - diffText.width) / 2));
 
 		interpColor.fpsLerpTo(songs[curSelected].parsedColor, 0.0625);
 		bg.color = interpColor.color;
@@ -305,29 +364,39 @@ class FreeplayState extends MusicBeatState
 		Chart.save('${Main.pathBack}assets/songs/${songs[curSelected].name}', chart, songs[curSelected].difficulties[curDifficulty].toLowerCase());
 	}
 
-	/**
-	 * Changes the current difficulty
-	 * @param change How much to change.
-	 * @param force Force the change if `change` is equal to 0
-	 */
-	public function changeDiff(change:Int = 0, force:Bool = false)
-	{
+	// hamgurber
+	var __oldDiffName = null;
+	public function changeDiff(change:Int = 0, force:Bool = false) {
 		if (change == 0 && !force) return;
-
+	
 		var curSong = songs[curSelected];
 		var validDifficulties = curSong.difficulties.length > 0;
-		var event = event("onChangeDiff", EventManager.get(MenuChangeEvent).recycle(curDifficulty, validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length-1) : 0, change));
-
+		var event = event("onChangeDiff", EventManager.get(MenuChangeEvent).recycle(
+			curDifficulty, 
+			validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length - 1) : 0, 
+			change
+		));
+	
 		if (event.cancelled) return;
-
 		curDifficulty = event.value;
-
+	
+		var newDiffName = validDifficulties ? curSong.difficulties[curDifficulty].toLowerCase() : "standard";
+		if (__oldDiffName != (__oldDiffName = newDiffName)) {
+			for (e in difficultySprites) e.visible = false;
+	
+			var diffSprite = difficultySprites[newDiffName];
+			if (diffSprite != null) {
+				diffSprite.visible = true;
+	
+				if (__lastDifficultyTween != null)
+					__lastDifficultyTween.cancel();
+				diffSprite.alpha = 0;
+				diffSprite.y = leftArrow.y - 15;
+	
+				__lastDifficultyTween = FlxTween.tween(diffSprite, {y: leftArrow.y, alpha: 1}, 0.07);
+			}
+		}
 		updateScore();
-
-		if (curSong.difficulties.length > 1)
-			diffText.text = '< ${curSong.difficulties[curDifficulty]} >';
-		else
-			diffText.text = validDifficulties ? curSong.difficulties[curDifficulty] : "-";
 	}
 
 	function updateScore() {
@@ -407,22 +476,21 @@ class FreeplayState extends MusicBeatState
 	function updateOptionsAlpha() {
 		var event = event("onUpdateOptionsAlpha", EventManager.get(FreeplayAlphaUpdateEvent).recycle(0.6, 0.45, 1, 1, 0.25));
 		if (event.cancelled) return;
+	
+		// all of this is new and its to make the items scroll
+		var target = cast(grpSongs.members[curSelected], FlxText);
+		if (target != null) {
+			var targetY = target.y - songListCam.height /2;
+			var speed = 0.12;
+			songListCam.scroll.y += (targetY - songListCam.scroll.y) * speed;
 
-		for (i in 0...iconArray.length)
-			iconArray[i].alpha = lerp(iconArray[i].alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
-
-		iconArray[curSelected].alpha = #if PRELOAD_ALL songInstPlaying ? event.selectedPlayingAlpha : #end event.selectedAlpha;
-
-		for (i=>item in grpSongs.members)
-		{
-			item.targetY = i - curSelected;
-
-			item.alpha = lerp(item.alpha, #if PRELOAD_ALL songInstPlaying ? event.idlePlayingAlpha : #end event.idleAlpha, event.lerp);
-
-			if (item.targetY == 0)
-				item.alpha =  #if PRELOAD_ALL songInstPlaying ? event.selectedPlayingAlpha : #end event.selectedAlpha;
+			// snap so it dont jitter
+			if (Math.abs(songListCam.scroll.y - targetY) < 0.1) {
+				songListCam.scroll.y = targetY;
+			}
 		}
 	}
+	
 }
 
 class FreeplaySonglist {
