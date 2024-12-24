@@ -152,7 +152,7 @@ class FreeplayState extends MusicBeatState
 
 		// ALL OF THIS is rewritten basically
 		for (i in 0...songs.length) {
-			var songText = new FlxText(560, (140 * i) + 30, 0, songs[i].displayName);
+			var songText = new FlxText(560, (75 * i) + 30, 0, songs[i].displayName);
 			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
 			songText.setBorderStyle(OUTLINE, FlxColor.BLACK, 4, 100);
 			songText.camera = songListCam;
