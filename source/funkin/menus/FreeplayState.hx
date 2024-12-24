@@ -9,7 +9,6 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 import funkin.savedata.FunkinSave;
 import funkin.backend.scripting.events.*;
-
 // new freep imports
 import flixel.FlxCamera;
 import flixel.tweens.FlxTween;
@@ -27,10 +26,12 @@ class FreeplayState extends MusicBeatState
 	 * Currently selected song
 	 */
 	public var curSelected:Int = 0;
+
 	/**
 	 * Currently selected difficulty
 	 */
 	public var curDifficulty:Int = 1;
+
 	/**
 	 * Currently selected coop/opponent mode
 	 */
@@ -50,6 +51,7 @@ class FreeplayState extends MusicBeatState
 	 * Currently lerped score. Is updated to go towards `intendedScore`.
 	 */
 	public var lerpScore:Int = 0;
+
 	/**
 	 * Destination for the currently lerped score.
 	 */
@@ -59,6 +61,7 @@ class FreeplayState extends MusicBeatState
 	 * Assigned FreeplaySonglist item.
 	 */
 	public var songList:FreeplaySonglist;
+
 	/**
 	 * Black background around the score, the difficulty text and the co-op text.
 	 */
@@ -89,15 +92,10 @@ class FreeplayState extends MusicBeatState
 	 */
 	public var interpColor:FlxInterpolateColor;
 
-
-
 	// fug
 	var separator:FlxSprite;
 	var charaBackground:Array<FlxSprite> = [];
 	var __lastDifficultyTween:FlxTween;
-
-	//var charaSprite (idk what to do for this yet)
-
 	var songListCam:FlxCamera;
 	var scoreCam:FlxCamera;
 
@@ -112,14 +110,19 @@ class FreeplayState extends MusicBeatState
 		songList = FreeplaySonglist.get();
 		songs = songList.songs;
 
-		for(k=>s in songs) {
-			if (s.name == Options.freeplayLastSong) {
+		for (k => s in songs)
+		{
+			if (s.name == Options.freeplayLastSong)
+			{
 				curSelected = k;
 			}
 		}
-		if (songs[curSelected] != null) {
-			for(k=>diff in songs[curSelected].difficulties) {
-				if (diff == Options.freeplayLastDifficulty) {
+		if (songs[curSelected] != null)
+		{
+			for (k => diff in songs[curSelected].difficulties)
+			{
+				if (diff == Options.freeplayLastDifficulty)
+				{
 					curDifficulty = k;
 				}
 			}
@@ -151,10 +154,12 @@ class FreeplayState extends MusicBeatState
 		add(grpSongs);
 
 		// ALL OF THIS is rewritten basically
-		for (i in 0...songs.length) {
+		for (i in 0...songs.length)
+		{
 			var songText = new FlxText(560, (75 * i) + 30, 0, songs[i].displayName);
 			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
 			songText.setBorderStyle(OUTLINE, FlxColor.BLACK, 4, 100);
+			songText.alpha = 0.45;
 			songText.camera = songListCam;
 			grpSongs.add(songText);
 		}
@@ -168,14 +173,14 @@ class FreeplayState extends MusicBeatState
 		scoreBG.camera = scoreCam;
 		add(scoreBG);
 
-
 		// DUMBASS ARROWS (from story menu)
 		var assets = Paths.getFrames('menus/storymenu/assets');
 		var directions = ["left", "right"];
 
 		leftArrow = new FlxSprite((FlxG.width / 2 + 200) / 2, (scoreBG.y / 2) + 7);
-		rightArrow = new FlxSprite((FlxG.width /2 + 200), (scoreBG.y / 2) + 7);
-		for(k=>arrow in [leftArrow, rightArrow]) {
+		rightArrow = new FlxSprite((FlxG.width / 2 + 200), (scoreBG.y / 2) + 7);
+		for (k => arrow in [leftArrow, rightArrow])
+		{
 			var dir = directions[k];
 
 			arrow.frames = assets;
@@ -188,25 +193,23 @@ class FreeplayState extends MusicBeatState
 		}
 
 		// mmmmmmmmmmmmmnmnmnnmnmnm.,.l.,
-		for (i in 0...songs.length) {
+		for (i in 0...songs.length)
+		{
 			var song = songs[i];
-		
-			for (e in song.difficulties) {
+
+			for (e in song.difficulties)
+			{
 				var le = e.toLowerCase();
-				if (difficultySprites[le] == null) {
+				if (difficultySprites[le] == null)
+				{
 					var diffSprite = new FlxSprite(leftArrow.x + leftArrow.width, leftArrow.y);
 					diffSprite.loadAnimatedGraphic(Paths.image('menus/storymenu/difficulties/${le}'));
-					diffSprite.setUnstretchedGraphicSize(
-						Std.int(rightArrow.x - leftArrow.x - leftArrow.width),
-						Std.int(leftArrow.height),
-						false,
-						1
-					);
+					diffSprite.setUnstretchedGraphicSize(Std.int(rightArrow.x - leftArrow.x - leftArrow.width), Std.int(leftArrow.height), false, 1);
 					diffSprite.antialiasing = true;
 					diffSprite.scrollFactor.set();
 					diffSprite.camera = scoreCam;
 					add(diffSprite);
-		
+
 					difficultySprites[le] = diffSprite;
 				}
 			}
@@ -225,11 +228,14 @@ class FreeplayState extends MusicBeatState
 
 		interpColor = new FlxInterpolateColor(bg.color);
 
-		//add the code to determine the stage and character to show on the left
-		// blah blah
+		// add the code to determine the stage and character to show on the left here plz
+		/*
+			show character
+			lol!
+		 */
 
-		//this is temporary
-		var tempstage:FlxSprite = new FlxSprite(0,0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
+		// this is temporary
+		var tempstage:FlxSprite = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
 		add(tempstage);
 
 		// adding in the separator
@@ -242,22 +248,27 @@ class FreeplayState extends MusicBeatState
 	 * How much time a song stays selected until it autoplays.
 	 */
 	public var timeUntilAutoplay:Float = 0.25;
+
 	/**
 	 * Whenever the song autoplays when hovered over.
 	 */
 	public var disableAutoPlay:Bool = false;
+
 	/**
 	 * Whenever the autoplayed song gets async loaded.
 	 */
 	public var disableAsyncLoading:Bool = #if desktop false #else true #end;
+
 	/**
 	 * Time elapsed since last autoplay. If this time exceeds `timeUntilAutoplay`, the currently selected song will play.
 	 */
 	public var autoplayElapsed:Float = 0;
+
 	/**
 	 * Whenever the currently selected song instrumental is playing.
 	 */
 	public var songInstPlaying:Bool = true;
+
 	/**
 	 * Path to the currently playing song instrumental.
 	 */
@@ -278,7 +289,8 @@ class FreeplayState extends MusicBeatState
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
-		if (canSelect) {
+		if (canSelect)
+		{
 			changeSelection((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0) - FlxG.mouse.wheel);
 			changeDiff((controls.LEFT_P ? -1 : 0) + (controls.RIGHT_P ? 1 : 0));
 			changeCoopMode((FlxG.keys.justPressed.TAB ? 1 : 0));
@@ -296,17 +308,21 @@ class FreeplayState extends MusicBeatState
 		#if PRELOAD_ALL
 		var dontPlaySongThisFrame = false;
 		autoplayElapsed += elapsed;
-		if (!disableAutoPlay && !songInstPlaying && (autoplayElapsed > timeUntilAutoplay || FlxG.keys.justPressed.SPACE)) {
-			if (curPlayingInst != (curPlayingInst = Paths.inst(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty]))) {
+		if (!disableAutoPlay && !songInstPlaying && (autoplayElapsed > timeUntilAutoplay || FlxG.keys.justPressed.SPACE))
+		{
+			if (curPlayingInst != (curPlayingInst = Paths.inst(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty])))
+			{
 				var huh:Void->Void = function() FlxG.sound.playMusic(curPlayingInst, 0);
-				if(!disableAsyncLoading) Main.execAsync(huh);
-				else huh();
+				if (!disableAsyncLoading)
+					Main.execAsync(huh);
+				else
+					huh();
 			}
 			songInstPlaying = true;
-			if(disableAsyncLoading) dontPlaySongThisFrame = true;
+			if (disableAsyncLoading)
+				dontPlaySongThisFrame = true;
 		}
 		#end
-
 
 		if (controls.BACK)
 		{
@@ -326,15 +342,21 @@ class FreeplayState extends MusicBeatState
 	var __opponentMode:Bool = false;
 	var __coopMode:Bool = false;
 
-	function updateCoopModes() {
+	function updateCoopModes()
+	{
 		__opponentMode = false;
 		__coopMode = false;
-		if (songs[curSelected].coopAllowed && songs[curSelected].opponentModeAllowed) {
+		if (songs[curSelected].coopAllowed && songs[curSelected].opponentModeAllowed)
+		{
 			__opponentMode = curCoopMode % 2 == 1;
 			__coopMode = curCoopMode >= 2;
-		} else if (songs[curSelected].coopAllowed) {
+		}
+		else if (songs[curSelected].coopAllowed)
+		{
 			__coopMode = curCoopMode == 1;
-		} else if (songs[curSelected].opponentModeAllowed) {
+		}
+		else if (songs[curSelected].opponentModeAllowed)
+		{
 			__opponentMode = curCoopMode == 1;
 		}
 	}
@@ -342,14 +364,19 @@ class FreeplayState extends MusicBeatState
 	/**
 	 * Selects the current song.
 	 */
-	public function select() {
+	public function select()
+	{
 		updateCoopModes();
 
-		if (songs[curSelected].difficulties.length <= 0) return;
+		if (songs[curSelected].difficulties.length <= 0)
+			return;
 
-		var event = event("onSelect", EventManager.get(FreeplaySongSelectEvent).recycle(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty], __opponentMode, __coopMode));
+		var event = event("onSelect",
+			EventManager.get(FreeplaySongSelectEvent)
+				.recycle(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty], __opponentMode, __coopMode));
 
-		if (event.cancelled) return;
+		if (event.cancelled)
+			return;
 
 		Options.freeplayLastSong = songs[curSelected].name;
 		Options.freeplayLastDifficulty = songs[curSelected].difficulties[curDifficulty];
@@ -358,7 +385,8 @@ class FreeplayState extends MusicBeatState
 		FlxG.switchState(new PlayState());
 	}
 
-	public function convertChart() {
+	public function convertChart()
+	{
 		trace('Converting ${songs[curSelected].name} (${songs[curSelected].difficulties[curDifficulty]}) to Codename format...');
 		var chart = Chart.parse(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty]);
 		Chart.save('${Main.pathBack}assets/songs/${songs[curSelected].name}', chart, songs[curSelected].difficulties[curDifficulty].toLowerCase());
@@ -366,48 +394,57 @@ class FreeplayState extends MusicBeatState
 
 	// hamgurber
 	var __oldDiffName = null;
-	public function changeDiff(change:Int = 0, force:Bool = false) {
-		if (change == 0 && !force) return;
-	
+
+	public function changeDiff(change:Int = 0, force:Bool = false)
+	{
+		if (change == 0 && !force)
+			return;
+
 		var curSong = songs[curSelected];
 		var validDifficulties = curSong.difficulties.length > 0;
-		var event = event("onChangeDiff", EventManager.get(MenuChangeEvent).recycle(
-			curDifficulty, 
-			validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length - 1) : 0, 
-			change
-		));
-	
-		if (event.cancelled) return;
+		var event = event("onChangeDiff",
+			EventManager.get(MenuChangeEvent)
+				.recycle(curDifficulty, validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length - 1) : 0, change));
+
+		if (event.cancelled)
+			return;
 		curDifficulty = event.value;
-	
+
 		var newDiffName = validDifficulties ? curSong.difficulties[curDifficulty].toLowerCase() : "standard";
-		if (__oldDiffName != (__oldDiffName = newDiffName)) {
-			for (e in difficultySprites) e.visible = false;
-	
+		if (__oldDiffName != (__oldDiffName = newDiffName))
+		{
+			for (e in difficultySprites)
+				e.visible = false;
+
 			var diffSprite = difficultySprites[newDiffName];
-			if (diffSprite != null) {
+			if (diffSprite != null)
+			{
 				diffSprite.visible = true;
-	
+
 				if (__lastDifficultyTween != null)
 					__lastDifficultyTween.cancel();
 				diffSprite.alpha = 0;
 				diffSprite.y = leftArrow.y - 15;
-	
+
 				__lastDifficultyTween = FlxTween.tween(diffSprite, {y: leftArrow.y, alpha: 1}, 0.07);
 			}
 		}
 		updateScore();
 	}
 
-	function updateScore() {
-		if (songs[curSelected].difficulties.length <= 0) {
+	function updateScore()
+	{
+		if (songs[curSelected].difficulties.length <= 0)
+		{
 			intendedScore = 0;
 			return;
 		}
 		updateCoopModes();
 		var changes:Array<HighscoreChange> = [];
-		if (__coopMode) changes.push(CCoopMode);
-		if (__opponentMode) changes.push(COpponentMode);
+		if (__coopMode)
+			changes.push(CCoopMode);
+		if (__opponentMode)
+			changes.push(COpponentMode);
 		var saveData = FunkinSave.getSongHighscore(songs[curSelected].name, songs[curSelected].difficulties[curDifficulty], changes);
 		intendedScore = saveData.score;
 	}
@@ -416,10 +453,10 @@ class FreeplayState extends MusicBeatState
 	 * Array containing all labels for Co-Op / Opponent modes.
 	 */
 	public var coopLabels:Array<String> = [
-		"[TAB] Solo",
+		"[TAB] Default",
 		"[TAB] Opponent Mode",
-		"[TAB] Co-Op Mode",
-		"[TAB] Co-Op Mode (Switched)"
+		"[TAB] 2P Mode",
+		"[TAB] 2P Mode (Switch Sides)"
 	];
 
 	/**
@@ -427,22 +464,30 @@ class FreeplayState extends MusicBeatState
 	 * @param change How much to change
 	 * @param force Force the change, even if `change` is equal to 0.
 	 */
-	public function changeCoopMode(change:Int = 0, force:Bool = false) {
-		if (change == 0 && !force) return;
-		if (!songs[curSelected].coopAllowed && !songs[curSelected].opponentModeAllowed) return;
+	public function changeCoopMode(change:Int = 0, force:Bool = false)
+	{
+		if (change == 0 && !force)
+			return;
+		if (!songs[curSelected].coopAllowed && !songs[curSelected].opponentModeAllowed)
+			return;
 
 		var bothEnabled = songs[curSelected].coopAllowed && songs[curSelected].opponentModeAllowed;
-		var event = event("onChangeCoopMode", EventManager.get(MenuChangeEvent).recycle(curCoopMode, FlxMath.wrap(curCoopMode + change, 0, bothEnabled ? 3 : 1), change));
+		var event = event("onChangeCoopMode",
+			EventManager.get(MenuChangeEvent).recycle(curCoopMode, FlxMath.wrap(curCoopMode + change, 0, bothEnabled ? 3 : 1), change));
 
-		if (event.cancelled) return;
+		if (event.cancelled)
+			return;
 
 		curCoopMode = event.value;
 
 		updateScore();
 
-		if (bothEnabled) {
+		if (bothEnabled)
+		{
 			coopText.text = coopLabels[curCoopMode];
-		} else {
+		}
+		else
+		{
 			coopText.text = coopLabels[curCoopMode * (songs[curSelected].coopAllowed ? 2 : 1)];
 		}
 	}
@@ -454,68 +499,94 @@ class FreeplayState extends MusicBeatState
 	 */
 	public function changeSelection(change:Int = 0, force:Bool = false)
 	{
-		if (change == 0 && !force) return;
+		if (change == 0 && !force)
+			return;
 
 		var bothEnabled = songs[curSelected].coopAllowed && songs[curSelected].opponentModeAllowed;
-		var event = event("onChangeSelection", EventManager.get(MenuChangeEvent).recycle(curSelected, FlxMath.wrap(curSelected + change, 0, songs.length-1), change));
-		if (event.cancelled) return;
+		var event = event("onChangeSelection",
+			EventManager.get(MenuChangeEvent).recycle(curSelected, FlxMath.wrap(curSelected + change, 0, songs.length - 1), change));
+		if (event.cancelled)
+			return;
 
 		curSelected = event.value;
-		if (event.playMenuSFX) CoolUtil.playMenuSFX(SCROLL, 0.7);
+		if (event.playMenuSFX)
+			CoolUtil.playMenuSFX(SCROLL, 0.7);
 
 		changeDiff(0, true);
 
 		#if PRELOAD_ALL
-			autoplayElapsed = 0;
-			songInstPlaying = false;
+		autoplayElapsed = 0;
+		songInstPlaying = false;
 		#end
 
 		coopText.visible = songs[curSelected].coopAllowed || songs[curSelected].opponentModeAllowed;
 	}
 
-	function updateOptionsAlpha() {
+	function updateOptionsAlpha()
+	{
 		var event = event("onUpdateOptionsAlpha", EventManager.get(FreeplayAlphaUpdateEvent).recycle(0.6, 0.45, 1, 1, 0.25));
-		if (event.cancelled) return;
-	
-		// all of this is new and its to make the items scroll
+		if (event.cancelled)
+			return;
+
+		// alpha shit
+		for (i in 0...grpSongs.members.length)
+		{
+			var item = cast(grpSongs.members[i], FlxText);
+			if (item != null)
+			{
+				item.alpha = (i == curSelected) ? 1 : 0.45;
+			}
+		}
+
+		// make the items scroll
 		var target = cast(grpSongs.members[curSelected], FlxText);
-		if (target != null) {
-			var targetY = target.y - songListCam.height /2;
-			var speed = 0.12;
+		if (target != null)
+		{
+			var targetY = target.y - songListCam.height / 2;
+			var speed = 0.1;
 			songListCam.scroll.y += (targetY - songListCam.scroll.y) * speed;
 
 			// snap so it dont jitter
-			if (Math.abs(songListCam.scroll.y - targetY) < 0.1) {
+			if (Math.abs(songListCam.scroll.y - targetY) < 0.1)
+			{
 				songListCam.scroll.y = targetY;
 			}
 		}
 	}
-	
 }
 
-class FreeplaySonglist {
+class FreeplaySonglist
+{
 	public var songs:Array<ChartMetaData> = [];
 
-	public function new() {}
+	public function new()
+	{
+	}
 
-	public function getSongsFromSource(source:funkin.backend.assets.AssetsLibraryList.AssetSource, useTxt:Bool = true) {
+	public function getSongsFromSource(source:funkin.backend.assets.AssetsLibraryList.AssetSource, useTxt:Bool = true)
+	{
 		var path:String = Paths.txt('freeplaySonglist');
 		var songsFound:Array<String> = [];
-		if (useTxt && Paths.assetsTree.existsSpecific(path, "TEXT", source)) {
+		if (useTxt && Paths.assetsTree.existsSpecific(path, "TEXT", source))
+		{
 			songsFound = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
-		} else {
+		}
+		else
+		{
 			songsFound = Paths.getFolderDirectories('songs', false, source);
 		}
 
-		if (songsFound.length > 0) {
-			for(s in songsFound)
+		if (songsFound.length > 0)
+		{
+			for (s in songsFound)
 				songs.push(Chart.loadChartMeta(s, "normal", source == MODS));
 			return false;
 		}
 		return true;
 	}
 
-	public static function get(useTxt:Bool = true) {
+	public static function get(useTxt:Bool = true)
+	{
 		var songList = new FreeplaySonglist();
 
 		if (songList.getSongsFromSource(MODS, useTxt))
