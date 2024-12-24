@@ -12,6 +12,7 @@ import funkin.backend.scripting.events.*;
 
 // new freep imports
 import flixel.FlxCamera;
+import flixel.tweens.FlxTween;
 
 using StringTools;
 
@@ -39,11 +40,6 @@ class FreeplayState extends MusicBeatState
 	 * Text containing the score info (PERSONAL BEST: 0)
 	 */
 	public var scoreText:FlxText;
-
-	/**
-	 * Text containing the current difficulty (< HARD >)
-	 */
-	public var diffText:FlxText;
 
 	/**
 	 * Text containing the current coop/opponent mode ([TAB] Co-Op mode)
@@ -98,11 +94,17 @@ class FreeplayState extends MusicBeatState
 	// fug
 	var separator:FlxSprite;
 	var charaBackground:Array<FlxSprite> = [];
+	var __lastDifficultyTween:FlxTween;
 
 	//var charaSprite (idk what to do for this yet)
 
 	var songListCam:FlxCamera;
 	var scoreCam:FlxCamera;
+
+	// public fug
+	public var difficultySprites:Map<String, FlxSprite> = [];
+	public var leftArrow:FlxSprite;
+	public var rightArrow:FlxSprite;
 
 	override function create()
 	{
@@ -157,19 +159,58 @@ class FreeplayState extends MusicBeatState
 			grpSongs.add(songText);
 		}
 
-		scoreText = new FlxText(FlxG.width * 0.7, 11, 0, "", 32);
+		scoreText = new FlxText(FlxG.width * 0.7, 17, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		scoreText.camera = scoreCam;
 
-		scoreBG = new FlxSprite(0, 0).makeGraphic(1280, 85, 0xFF000000);
+		scoreBG = new FlxSprite(0, 0).makeGraphic(1280, 100, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		scoreBG.camera = scoreCam;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
-		diffText.font = scoreText.font;
-		diffText.camera = scoreCam;
-		add(diffText);
+
+		// DUMBASS ARROWS (from story menu)
+		var assets = Paths.getFrames('menus/storymenu/assets');
+		var directions = ["left", "right"];
+
+		leftArrow = new FlxSprite((FlxG.width / 2 + 200) / 2, (scoreBG.y / 2) + 7);
+		rightArrow = new FlxSprite((FlxG.width /2 + 200), (scoreBG.y / 2) + 7);
+		for(k=>arrow in [leftArrow, rightArrow]) {
+			var dir = directions[k];
+
+			arrow.frames = assets;
+			arrow.animation.addByPrefix('idle', 'arrow $dir');
+			arrow.animation.addByPrefix('press', 'arrow push $dir', 24, false);
+			arrow.animation.play('idle');
+			arrow.antialiasing = true;
+			arrow.camera = scoreCam;
+			add(arrow);
+		}
+
+		// mmmmmmmmmmmmmnmnmnnmnmnm.,.l.,
+		for (i in 0...songs.length) {
+			var song = songs[i];
+		
+			for (e in song.difficulties) {
+				var le = e.toLowerCase();
+				if (difficultySprites[le] == null) {
+					var diffSprite = new FlxSprite(leftArrow.x + leftArrow.width, leftArrow.y);
+					diffSprite.loadAnimatedGraphic(Paths.image('menus/storymenu/difficulties/${le}'));
+					diffSprite.setUnstretchedGraphicSize(
+						Std.int(rightArrow.x - leftArrow.x - leftArrow.width),
+						Std.int(leftArrow.height),
+						false,
+						1
+					);
+					diffSprite.antialiasing = true;
+					diffSprite.scrollFactor.set();
+					diffSprite.camera = scoreCam;
+					add(diffSprite);
+		
+					difficultySprites[le] = diffSprite;
+				}
+			}
+		}
 
 		coopText = new FlxText(FlxG.width * 0.7, scoreText.y + 35, 0, "[TAB] Solo", 24);
 		coopText.font = scoreText.font;
@@ -248,7 +289,6 @@ class FreeplayState extends MusicBeatState
 		scoreBG.updateHitbox();
 
 		scoreText.x = coopText.x = scoreBG.x + 4;
-		diffText.x = Std.int(scoreBG.x + ((scoreBG.width - diffText.width) / 2));
 
 		interpColor.fpsLerpTo(songs[curSelected].parsedColor, 0.0625);
 		bg.color = interpColor.color;
@@ -324,29 +364,39 @@ class FreeplayState extends MusicBeatState
 		Chart.save('${Main.pathBack}assets/songs/${songs[curSelected].name}', chart, songs[curSelected].difficulties[curDifficulty].toLowerCase());
 	}
 
-	/**
-	 * Changes the current difficulty
-	 * @param change How much to change.
-	 * @param force Force the change if `change` is equal to 0
-	 */
-	public function changeDiff(change:Int = 0, force:Bool = false)
-	{
+	// hamgurber
+	var __oldDiffName = null;
+	public function changeDiff(change:Int = 0, force:Bool = false) {
 		if (change == 0 && !force) return;
-
+	
 		var curSong = songs[curSelected];
 		var validDifficulties = curSong.difficulties.length > 0;
-		var event = event("onChangeDiff", EventManager.get(MenuChangeEvent).recycle(curDifficulty, validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length-1) : 0, change));
-
+		var event = event("onChangeDiff", EventManager.get(MenuChangeEvent).recycle(
+			curDifficulty, 
+			validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curSong.difficulties.length - 1) : 0, 
+			change
+		));
+	
 		if (event.cancelled) return;
-
 		curDifficulty = event.value;
-
+	
+		var newDiffName = validDifficulties ? curSong.difficulties[curDifficulty].toLowerCase() : "standard";
+		if (__oldDiffName != (__oldDiffName = newDiffName)) {
+			for (e in difficultySprites) e.visible = false;
+	
+			var diffSprite = difficultySprites[newDiffName];
+			if (diffSprite != null) {
+				diffSprite.visible = true;
+	
+				if (__lastDifficultyTween != null)
+					__lastDifficultyTween.cancel();
+				diffSprite.alpha = 0;
+				diffSprite.y = leftArrow.y - 15;
+	
+				__lastDifficultyTween = FlxTween.tween(diffSprite, {y: leftArrow.y, alpha: 1}, 0.07);
+			}
+		}
 		updateScore();
-
-		if (curSong.difficulties.length > 1)
-			diffText.text = '< ${curSong.difficulties[curDifficulty]} >';
-		else
-			diffText.text = validDifficulties ? curSong.difficulties[curDifficulty] : "-";
 	}
 
 	function updateScore() {
