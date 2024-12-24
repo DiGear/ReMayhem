@@ -324,6 +324,10 @@ class FreeplayState extends MusicBeatState
 		}
 		#end
 
+		// arrow shit
+		if (leftArrow != null && leftArrow.exists) leftArrow.animation.play(controls.LEFT ? 'press' : 'idle');
+		if (rightArrow != null && rightArrow.exists) rightArrow.animation.play(controls.RIGHT ? 'press' : 'idle');
+
 		if (controls.BACK)
 		{
 			CoolUtil.playMenuSFX(CANCEL, 0.7);
