@@ -94,7 +94,6 @@ class FreeplayState extends MusicBeatState
 
 	// fug
 	var separator:FlxSprite;
-	var charaBackground:Array<FlxSprite> = [];
 	var __lastDifficultyTween:FlxTween;
 	var songListCam:FlxCamera;
 	var scoreCam:FlxCamera;
@@ -103,6 +102,20 @@ class FreeplayState extends MusicBeatState
 	public var difficultySprites:Map<String, FlxSprite> = [];
 	public var leftArrow:FlxSprite;
 	public var rightArrow:FlxSprite;
+	public var leftStage:FlxSprite;
+	public var leftChar:FlxSprite;
+
+	// this is fucking terrible btw
+	public function getCharacterValues(displayName:String):Array<String>
+	{
+		return switch (displayName)
+		{
+			case "Chronokinesis", "Stargazer", "Singularity", "This Ones Final Hours": ["danny", "danny-m", "danny1"];
+			case "Leffrey", "Leffreys Baja Rap": ["leffrey", "jeffrey", "taco"];
+			case "ezo_testing", "November": ["ezo", "bf", "default"];
+			default: ["bf", "bf", "default"];
+		};
+	}
 
 	override function create()
 	{
@@ -228,17 +241,11 @@ class FreeplayState extends MusicBeatState
 
 		interpColor = new FlxInterpolateColor(bg.color);
 
-		// add the code to determine the stage and character to show on the left here plz
-		/*
-			show character
-			lol!
-		 */
+		// load stage
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
+		add(leftStage);
 
-		// this is temporary
-		var tempstage:FlxSprite = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
-		add(tempstage);
-
-		// adding in the separator
+		// squiggly separator
 		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
 		add(separator);
 	}
@@ -325,8 +332,10 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		// arrow shit
-		if (leftArrow != null && leftArrow.exists) leftArrow.animation.play(controls.LEFT ? 'press' : 'idle');
-		if (rightArrow != null && rightArrow.exists) rightArrow.animation.play(controls.RIGHT ? 'press' : 'idle');
+		if (leftArrow != null && leftArrow.exists)
+			leftArrow.animation.play(controls.LEFT ? 'press' : 'idle');
+		if (rightArrow != null && rightArrow.exists)
+			rightArrow.animation.play(controls.RIGHT ? 'press' : 'idle');
 
 		if (controls.BACK)
 		{
@@ -524,6 +533,21 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		coopText.visible = songs[curSelected].coopAllowed || songs[curSelected].opponentModeAllowed;
+
+		var song = songs[curSelected];
+		var characterValues = getCharacterValues(song.displayName);
+
+		var character = characterValues[0];
+		var mCharacter = characterValues[1];
+		var stageGraphic = characterValues[2];
+
+		if (leftStage != null)
+		{
+			leftStage.kill();
+		}
+
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		add(leftStage);
 	}
 
 	function updateOptionsAlpha()
