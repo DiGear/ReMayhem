@@ -113,7 +113,7 @@ class FreeplayState extends MusicBeatState
 			case "Chronokinesis", "Stargazer", "Singularity", "This Ones Final Hours": ["danny", "danny-m", "danny1"];
 			case "Leffrey", "Leffreys Baja Rap": ["leffrey", "jeffrey", "taco"];
 			case "ezo_testing", "November": ["ezo", "bf", "default"];
-			default: ["bf", "bf", "default"];
+			default: return ["bf", "bf", "default"];
 		};
 	}
 
@@ -247,6 +247,7 @@ class FreeplayState extends MusicBeatState
 
 		// squiggly separator
 		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
+		separator.camera = scoreCam;
 		add(separator);
 	}
 
