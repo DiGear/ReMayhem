@@ -112,7 +112,7 @@ class FreeplayState extends MusicBeatState
 		{
 			case "Chronokinesis", "Stargazer", "Singularity", "This One's Final Hours": ["danny", "danny-m", "danny1"];
 			case "Leffrey", "Leffrey's Baja Rap": ["leffrey", "jeffrey", "taco"];
-			case "ezo_testing", "November": ["ezo", "bf", "default"];
+			case "ezo dummy", "November": ["ezo", "bf", "ezo"];
 			default: return ["bf", "bf", "default"];
 		};
 	}
