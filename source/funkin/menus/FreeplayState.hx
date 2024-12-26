@@ -92,13 +92,17 @@ class FreeplayState extends MusicBeatState
 	 */
 	public var interpColor:FlxInterpolateColor;
 
-	// fug
+	// this is for the new freeplay menu stuff
 	var separator:FlxSprite;
 	var __lastDifficultyTween:FlxTween;
 	var songListCamera:FlxCamera;
 	var onTopCamera:FlxCamera;
 
-	// public fug
+	// stage and char scale configs
+	public var stageScale:Float = 1;
+	public var charScale:Float = 0.66;
+
+	// public vars for the new freeplay menu stuff
 	public var difficultySprites:Map<String, FlxSprite> = [];
 	public var leftArrow:FlxSprite;
 	public var rightArrow:FlxSprite;
@@ -106,14 +110,15 @@ class FreeplayState extends MusicBeatState
 	public var leftChar:FlxSprite;
 
 	// this is fucking terrible btw
-	public function getCharacterValues(displayName:String):Array<String>
+	public function getCharacterValues(displayName:String):Array<Dynamic>
 	{
 		return switch (displayName)
 		{
-			case "Chronokinesis", "Stargazer", "Singularity", "This One's Final Hours": ["danny", "danny-m", "danny1"];
-			case "Leffrey", "Leffrey's Baja Rap": ["leffrey", "jeffrey", "taco"];
-			case "ezo dummy", "November": ["ezo", "bf", "ezo"];
-			default: return ["bf", "bf", "default"];
+			// Song Names [Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y]
+			case "Chronokinesis", "Stargazer", "Singularity", "This One's Final Hours": ["danny", "danny-m", "danny1", 66, 120, 66, 120];
+			case "Leffrey", "Leffrey's Baja Rap": ["leffrey", "jeffrey", "taco", 35, -20, 35, -18];
+			case "ezo dummy", "November": ["ezo", "ezo", "ezo", 92, -57, 92, -57];
+			default: return ["dad", "dad", "default", 28, -30, 28, -30];
 		};
 	}
 
@@ -243,11 +248,15 @@ class FreeplayState extends MusicBeatState
 
 		// init + load the stage and char
 		var song = songs[curSelected];
-		var characterValues = getCharacterValues(song.displayName);
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
 
 		var character = characterValues[0];
 		var mCharacter = characterValues[1];
 		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
 
 		if (leftStage != null)
 		{
@@ -255,10 +264,24 @@ class FreeplayState extends MusicBeatState
 		}
 
 		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
 		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 
 		// squiggly separator
 		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
+		separator.antialiasing = true;
 		separator.camera = onTopCamera;
 		add(separator);
 	}
@@ -456,6 +479,38 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 		updateScore();
+
+		var song = songs[curSelected];
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
+
+		var character = characterValues[0];
+		var mCharacter = characterValues[1];
+		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
+
+		if (leftStage != null)
+		{
+			leftStage.kill();
+		}
+
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
+		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 	}
 
 	function updateScore()
@@ -548,11 +603,15 @@ class FreeplayState extends MusicBeatState
 		coopText.visible = songs[curSelected].coopAllowed || songs[curSelected].opponentModeAllowed;
 
 		var song = songs[curSelected];
-		var characterValues = getCharacterValues(song.displayName);
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
 
 		var character = characterValues[0];
 		var mCharacter = characterValues[1];
 		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
 
 		if (leftStage != null)
 		{
@@ -560,7 +619,20 @@ class FreeplayState extends MusicBeatState
 		}
 
 		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
 		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 	}
 
 	function updateOptionsAlpha()
