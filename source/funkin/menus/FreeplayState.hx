@@ -242,7 +242,19 @@ class FreeplayState extends MusicBeatState
 		interpColor = new FlxInterpolateColor(bg.color);
 
 		// load stage
-		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
+		var song = songs[curSelected];
+		var characterValues = getCharacterValues(song.displayName);
+
+		var character = characterValues[0];
+		var mCharacter = characterValues[1];
+		var stageGraphic = characterValues[2];
+
+		if (leftStage != null)
+		{
+			leftStage.kill();
+		}
+
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
 		add(leftStage);
 
 		// squiggly separator
