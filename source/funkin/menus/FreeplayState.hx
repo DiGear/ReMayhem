@@ -95,8 +95,8 @@ class FreeplayState extends MusicBeatState
 	// fug
 	var separator:FlxSprite;
 	var __lastDifficultyTween:FlxTween;
-	var songListCam:FlxCamera;
-	var scoreCam:FlxCamera;
+	var songListCamera:FlxCamera;
+	var onTopCamera:FlxCamera;
 
 	// public fug
 	public var difficultySprites:Map<String, FlxSprite> = [];
@@ -153,14 +153,14 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 
 		// this entire cam def is new and im using it to make the menu items scroll
-		songListCam = new FlxCamera(0, 0, 1280, 720);
-		songListCam.bgColor = FlxColor.TRANSPARENT;
-		FlxG.cameras.add(songListCam, false);
+		songListCamera = new FlxCamera(0, 0, 1280, 720);
+		songListCamera.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(songListCamera, false);
 
 		// this is so the score and diff overlay is on top
-		scoreCam = new FlxCamera(0, 0, 1280, 720);
-		scoreCam.bgColor = FlxColor.TRANSPARENT;
-		FlxG.cameras.add(scoreCam, false);
+		onTopCamera = new FlxCamera(0, 0, 1280, 720);
+		onTopCamera.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(onTopCamera, false);
 
 		// this now a FlxText group rather than alphabet group
 		grpSongs = new FlxTypedGroup<FlxText>();
@@ -173,17 +173,17 @@ class FreeplayState extends MusicBeatState
 			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
 			songText.setBorderStyle(OUTLINE, FlxColor.BLACK, 4, 100);
 			songText.alpha = 0.45;
-			songText.camera = songListCam;
+			songText.camera = songListCamera;
 			grpSongs.add(songText);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 17, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		scoreText.camera = scoreCam;
+		scoreText.camera = onTopCamera;
 
 		scoreBG = new FlxSprite(0, 0).makeGraphic(1280, 100, 0xFF000000);
 		scoreBG.alpha = 0.6;
-		scoreBG.camera = scoreCam;
+		scoreBG.camera = onTopCamera;
 		add(scoreBG);
 
 		// DUMBASS ARROWS (from story menu)
@@ -201,7 +201,7 @@ class FreeplayState extends MusicBeatState
 			arrow.animation.addByPrefix('press', 'arrow push $dir', 24, false);
 			arrow.animation.play('idle');
 			arrow.antialiasing = true;
-			arrow.camera = scoreCam;
+			arrow.camera = onTopCamera;
 			add(arrow);
 		}
 
@@ -220,7 +220,7 @@ class FreeplayState extends MusicBeatState
 					diffSprite.setUnstretchedGraphicSize(Std.int(rightArrow.x - leftArrow.x - leftArrow.width), Std.int(leftArrow.height), false, 1);
 					diffSprite.antialiasing = true;
 					diffSprite.scrollFactor.set();
-					diffSprite.camera = scoreCam;
+					diffSprite.camera = onTopCamera;
 					add(diffSprite);
 
 					difficultySprites[le] = diffSprite;
@@ -230,7 +230,7 @@ class FreeplayState extends MusicBeatState
 
 		coopText = new FlxText(FlxG.width * 0.7, scoreText.y + 35, 0, "[TAB] Solo", 24);
 		coopText.font = scoreText.font;
-		coopText.camera = scoreCam;
+		coopText.camera = onTopCamera;
 		add(coopText);
 
 		add(scoreText);
@@ -241,7 +241,7 @@ class FreeplayState extends MusicBeatState
 
 		interpColor = new FlxInterpolateColor(bg.color);
 
-		// load stage
+		// init + load the stage and char
 		var song = songs[curSelected];
 		var characterValues = getCharacterValues(song.displayName);
 
@@ -259,7 +259,7 @@ class FreeplayState extends MusicBeatState
 
 		// squiggly separator
 		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
-		separator.camera = scoreCam;
+		separator.camera = onTopCamera;
 		add(separator);
 	}
 
@@ -583,14 +583,14 @@ class FreeplayState extends MusicBeatState
 		var target = cast(grpSongs.members[curSelected], FlxText);
 		if (target != null)
 		{
-			var targetY = target.y - songListCam.height / 2;
+			var targetY = target.y - songListCamera.height / 2;
 			var speed = 0.1;
-			songListCam.scroll.y += (targetY - songListCam.scroll.y) * speed;
+			songListCamera.scroll.y += (targetY - songListCamera.scroll.y) * speed;
 
 			// snap so it dont jitter
-			if (Math.abs(songListCam.scroll.y - targetY) < 0.1)
+			if (Math.abs(songListCamera.scroll.y - targetY) < 0.1)
 			{
-				songListCam.scroll.y = targetY;
+				songListCamera.scroll.y = targetY;
 			}
 		}
 	}
