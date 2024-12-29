@@ -2,8 +2,7 @@
 	"opponentModeAllowed": true,
 	"icon": "Icon",
 	"difficulties": [
-		"Standard",
-		"Mayhem"
+		"Standard"
 	],
 	"parsedColor": -1,
 	"color": "#FFFFFF",

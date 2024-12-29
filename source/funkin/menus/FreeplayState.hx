@@ -92,13 +92,17 @@ class FreeplayState extends MusicBeatState
 	 */
 	public var interpColor:FlxInterpolateColor;
 
-	// fug
+	// this is for the new freeplay menu stuff
 	var separator:FlxSprite;
 	var __lastDifficultyTween:FlxTween;
-	var songListCam:FlxCamera;
-	var scoreCam:FlxCamera;
+	var songListCamera:FlxCamera;
+	var onTopCamera:FlxCamera;
 
-	// public fug
+	// stage and char scale configs
+	public var stageScale:Float = 1;
+	public var charScale:Float = 0.66;
+
+	// public vars for the new freeplay menu stuff
 	public var difficultySprites:Map<String, FlxSprite> = [];
 	public var leftArrow:FlxSprite;
 	public var rightArrow:FlxSprite;
@@ -106,14 +110,15 @@ class FreeplayState extends MusicBeatState
 	public var leftChar:FlxSprite;
 
 	// this is fucking terrible btw
-	public function getCharacterValues(displayName:String):Array<String>
+	public function getCharacterValues(displayName:String):Array<Dynamic>
 	{
 		return switch (displayName)
 		{
-			case "Chronokinesis", "Stargazer", "Singularity", "This One's Final Hours": ["danny", "danny-m", "danny1"];
-			case "Leffrey", "Leffrey's Baja Rap": ["leffrey", "jeffrey", "taco"];
-			case "ezo_testing", "November": ["ezo", "bf", "default"];
-			default: return ["bf", "bf", "default"];
+			// Song Names [Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y]
+			case "Chronokinesis", "Stargazer", "Singularity", "This One's Final Hours": ["danny", "danny-m", "danny1", 66, 120, 66, 120];
+			case "Leffrey", "Leffrey's Baja Rap": ["leffrey", "jeffrey", "taco", 35, -20, 35, -18];
+			case "ezo dummy", "November": ["ezo", "ezo", "ezo", 92, -57, 92, -57];
+			default: return ["dad", "dad", "default", 28, -30, 28, -30];
 		};
 	}
 
@@ -153,14 +158,14 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 
 		// this entire cam def is new and im using it to make the menu items scroll
-		songListCam = new FlxCamera(0, 0, 1280, 720);
-		songListCam.bgColor = FlxColor.TRANSPARENT;
-		FlxG.cameras.add(songListCam, false);
+		songListCamera = new FlxCamera(0, 0, 1280, 720);
+		songListCamera.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(songListCamera, false);
 
 		// this is so the score and diff overlay is on top
-		scoreCam = new FlxCamera(0, 0, 1280, 720);
-		scoreCam.bgColor = FlxColor.TRANSPARENT;
-		FlxG.cameras.add(scoreCam, false);
+		onTopCamera = new FlxCamera(0, 0, 1280, 720);
+		onTopCamera.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(onTopCamera, false);
 
 		// this now a FlxText group rather than alphabet group
 		grpSongs = new FlxTypedGroup<FlxText>();
@@ -173,17 +178,17 @@ class FreeplayState extends MusicBeatState
 			songText.setFormat(Paths.font("vcr.ttf"), 52, FlxColor.WHITE, RIGHT);
 			songText.setBorderStyle(OUTLINE, FlxColor.BLACK, 4, 100);
 			songText.alpha = 0.45;
-			songText.camera = songListCam;
+			songText.camera = songListCamera;
 			grpSongs.add(songText);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 17, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		scoreText.camera = scoreCam;
+		scoreText.camera = onTopCamera;
 
 		scoreBG = new FlxSprite(0, 0).makeGraphic(1280, 100, 0xFF000000);
 		scoreBG.alpha = 0.6;
-		scoreBG.camera = scoreCam;
+		scoreBG.camera = onTopCamera;
 		add(scoreBG);
 
 		// DUMBASS ARROWS (from story menu)
@@ -201,7 +206,7 @@ class FreeplayState extends MusicBeatState
 			arrow.animation.addByPrefix('press', 'arrow push $dir', 24, false);
 			arrow.animation.play('idle');
 			arrow.antialiasing = true;
-			arrow.camera = scoreCam;
+			arrow.camera = onTopCamera;
 			add(arrow);
 		}
 
@@ -220,7 +225,7 @@ class FreeplayState extends MusicBeatState
 					diffSprite.setUnstretchedGraphicSize(Std.int(rightArrow.x - leftArrow.x - leftArrow.width), Std.int(leftArrow.height), false, 1);
 					diffSprite.antialiasing = true;
 					diffSprite.scrollFactor.set();
-					diffSprite.camera = scoreCam;
+					diffSprite.camera = onTopCamera;
 					add(diffSprite);
 
 					difficultySprites[le] = diffSprite;
@@ -230,7 +235,7 @@ class FreeplayState extends MusicBeatState
 
 		coopText = new FlxText(FlxG.width * 0.7, scoreText.y + 35, 0, "[TAB] Solo", 24);
 		coopText.font = scoreText.font;
-		coopText.camera = scoreCam;
+		coopText.camera = onTopCamera;
 		add(coopText);
 
 		add(scoreText);
@@ -241,13 +246,43 @@ class FreeplayState extends MusicBeatState
 
 		interpColor = new FlxInterpolateColor(bg.color);
 
-		// load stage
-		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/default'));
+		// init + load the stage and char
+		var song = songs[curSelected];
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
+
+		var character = characterValues[0];
+		var mCharacter = characterValues[1];
+		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
+
+		if (leftStage != null)
+		{
+			leftStage.kill();
+		}
+
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
 		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 
 		// squiggly separator
 		separator = new FlxSprite(477, 0).loadAnimatedGraphic(Paths.image('menus/freep/bolt'));
-		separator.camera = scoreCam;
+		separator.antialiasing = true;
+		separator.camera = onTopCamera;
 		add(separator);
 	}
 
@@ -444,6 +479,38 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 		updateScore();
+
+		var song = songs[curSelected];
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
+
+		var character = characterValues[0];
+		var mCharacter = characterValues[1];
+		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
+
+		if (leftStage != null)
+		{
+			leftStage.kill();
+		}
+
+		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
+		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 	}
 
 	function updateScore()
@@ -536,11 +603,15 @@ class FreeplayState extends MusicBeatState
 		coopText.visible = songs[curSelected].coopAllowed || songs[curSelected].opponentModeAllowed;
 
 		var song = songs[curSelected];
-		var characterValues = getCharacterValues(song.displayName);
+		var characterValues = getCharacterValues(song.displayName); // Character, M-Character, Stage, Char X, Char Y, M-Char X, M-Char Y
 
 		var character = characterValues[0];
 		var mCharacter = characterValues[1];
 		var stageGraphic = characterValues[2];
+		var charX = characterValues[3];
+		var charY = characterValues[4];
+		var mCharX = characterValues[5];
+		var mCharY = characterValues[6];
 
 		if (leftStage != null)
 		{
@@ -548,7 +619,20 @@ class FreeplayState extends MusicBeatState
 		}
 
 		leftStage = new FlxSprite(0, 0).loadAnimatedGraphic(Paths.image('menus/freep/stages/' + stageGraphic));
+		leftStage.antialiasing = true;
 		add(leftStage);
+
+		if (leftChar != null) 
+		{
+			leftChar.kill();
+		}
+
+		leftChar = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/freep/chara/' + (song.difficulties[curDifficulty] == "Mayhem" ? mCharacter : character)));
+		leftChar.scale.set(charScale, charScale);
+		leftChar.x = song.difficulties[curDifficulty] == "Mayhem" ? mCharX : charX;
+		leftChar.y = song.difficulties[curDifficulty] == "Mayhem" ? mCharY : charY;
+		leftChar.antialiasing = true;
+		add(leftChar);
 	}
 
 	function updateOptionsAlpha()
@@ -571,14 +655,14 @@ class FreeplayState extends MusicBeatState
 		var target = cast(grpSongs.members[curSelected], FlxText);
 		if (target != null)
 		{
-			var targetY = target.y - songListCam.height / 2;
+			var targetY = target.y - songListCamera.height / 2;
 			var speed = 0.1;
-			songListCam.scroll.y += (targetY - songListCam.scroll.y) * speed;
+			songListCamera.scroll.y += (targetY - songListCamera.scroll.y) * speed;
 
 			// snap so it dont jitter
-			if (Math.abs(songListCam.scroll.y - targetY) < 0.1)
+			if (Math.abs(songListCamera.scroll.y - targetY) < 0.1)
 			{
-				songListCam.scroll.y = targetY;
+				songListCamera.scroll.y = targetY;
 			}
 		}
 	}
