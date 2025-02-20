@@ -1,0 +1,20 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 160,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -26172,
+	"displayName": "Overclocked",
+	"icon": "epic_real_dannybot",
+	"name": "Overclocked",
+	"color": "#FF99C4",
+	"customValues": {
+		"composers": "DiGear"
+	}
+}

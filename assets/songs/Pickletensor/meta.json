@@ -1,0 +1,20 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 110,
+	"difficulties": [
+		"Standard",
+		"Mayhem"
+	],
+	"needsVoices": true,
+	"parsedColor": -26172,
+	"displayName": "Pickletensor",
+	"icon": "epic_real_dannybot",
+	"name": "Pickletensor",
+	"color": "#FF99C4",
+	"customValues": {
+		"composers": "DiGear"
+	}
+}
