@@ -15,7 +15,11 @@ function onPlayerMiss(e) {
 
 function onNoteCreation(e) {
     if (e.noteType == "Instakill Note"){
-		e.noteSprite = "game/notes/INSTAKILL_note_assets";
+		if (Assets.exists(Paths.image(e.noteSkinData.skin + "-instakill"))) {
+			e.noteFrames = e.noteSkinData.skin + "-instakill";
+		} else {
+			e.noteFrames = "game/notes/default-instakill";
+		}
 		e.note.updateHitbox();
 	}
 }

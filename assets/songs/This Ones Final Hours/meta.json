@@ -5,7 +5,8 @@
 	"stepsPerBeat": 4,
 	"bpm": 128,
 	"difficulties": [
-		"Standard"
+		"Standard",
+		"Mayhem"
 	],
 	"needsVoices": true,
 	"parsedColor": -5986817,

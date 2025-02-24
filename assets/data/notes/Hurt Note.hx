@@ -30,10 +30,15 @@ function onDadHit(e) {
 
 function onNoteCreation(e) {
     if (e.noteType == "Hurt Note"){
-		e.noteSprite = "game/notes/HURT_note_assets";
+		if (Assets.exists(Paths.image(e.noteSkinData.skin + "-hurt"))) {
+			e.noteFrames = e.noteSkinData.skin + "-hurt";
+		} else {
+			e.noteFrames = "game/notes/default-hurt";
+		}
 		e.note.updateHitbox();
 	}
 }
+
 
 function postCreate()
     if (hurtTween != null)
