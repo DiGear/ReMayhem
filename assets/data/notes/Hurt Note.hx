@@ -1,5 +1,8 @@
 var hurtTween:FlxTween;
 
+
+// ADD THE COLOR TWEENS BACKS LATER
+
 function onNoteHit(e)
     if (e.noteType == "Hurt Note")
         e.animSuffix = "miss";
@@ -8,8 +11,10 @@ function onPlayerHit(e) {
     if (e.noteType == "Hurt Note"){
         health -= .1;
         e.healthGain = 0;
-        boyfriend.color = FlxColor.RED;
-        hurtTween = FlxTween.color(boyfriend, 1, FlxColor.RED, FlxColor.WHITE, {ease: FlxEase.quintOut, onComplete: function(twn:FlxTween){hurtTween = null;}});
+
+		
+        //boyfriend.color = FlxColor.RED;
+        //hurtTween = FlxTween.color(boyfriend, 1, FlxColor.RED, FlxColor.WHITE, {ease: FlxEase.quintOut, onComplete: function(twn:FlxTween){hurtTween = null;}});
     }
 }
 
@@ -23,8 +28,9 @@ function onPlayerMiss(e) {
 function onDadHit(e) {
     if (e.noteType == "Hurt Note"){
         health += .1;
-        dad.color = FlxColor.RED;
-        hurtTween = FlxTween.color(dad, 1, FlxColor.RED, FlxColor.WHITE, {ease: FlxEase.quintOut, onComplete: function(twn:FlxTween){hurtTween = null;}});
+
+        //dad.color = FlxColor.RED;
+        //hurtTween = FlxTween.color(dad, 1, FlxColor.RED, FlxColor.WHITE, {ease: FlxEase.quintOut, onComplete: function(twn:FlxTween){hurtTween = null;}});
     }
 }
 
